@@ -21,7 +21,10 @@ warnings.filterwarnings('ignore')
 
 # In[7]:
 
+from IPython import get_ipython
+ipython = get_ipython()
 
+ipython.magic('load_ext', 'google.cloud.bigquery')
 get_ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
 
 
