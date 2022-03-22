@@ -54,5 +54,6 @@ for k in df.keys():
 # In[3]:
 
 print(os.getcwd())
+print(df)
 
 df.to_csv('out.csv')
