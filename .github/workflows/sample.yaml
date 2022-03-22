@@ -36,6 +36,7 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}    # GCPのサービスアカウント
         run: |
             echo $service_account_key | base64 --decode > credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
+            echo "export GOOGLE_APPLICATION_CREDENTIALS=credential.json"
             python make_regression.py
 
       - name: CSV commit

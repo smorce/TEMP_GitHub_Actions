@@ -74,7 +74,7 @@ json_open = open('credential.json', 'r')
 json_load = json.load(json_open)
 
 print(json_load)
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
 
 
 
@@ -84,7 +84,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
 
 from google.cloud import storage
 # storage_client = storage.Client.from_service_account_json(json_load)
-storage_client = storage.Client.from_service_account_json(str(json_load))
+# storage_client = storage.Client.from_service_account_json(str(json_load))
 print('aaa')
 client = storage.Client()
 print('bbb')
