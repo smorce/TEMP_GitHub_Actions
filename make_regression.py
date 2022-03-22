@@ -70,7 +70,7 @@ df.to_csv('./data/df.csv', index=False)
 
 import json
 
-json_open = open('./config/credential.json', 'r')
+json_open = open('credential.json', 'r')
 json_load = json.load(json_open)
 
 print(json_load)

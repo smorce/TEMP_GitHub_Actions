@@ -35,7 +35,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}         # GCPのプロジェクトID
           service_account_key: ${{ secrets.GCP_SA_KEY }}    # GCPのサービスアカウント
         run: |
-            echo-n $service_account_key | base64 --decode > ./config/credential.json
+            echo-n $service_account_key | base64 --decode > credential.json
             python make_regression.py
 
       - name: CSV commit
