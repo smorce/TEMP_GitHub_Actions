@@ -24,10 +24,9 @@ warnings.filterwarnings('ignore')
 from IPython import get_ipython
 ipython = get_ipython()
 
-%load_ext google.cloud.bigquery
+# %load_ext google.cloud.bigquery　←　SyntaxError: invalid syntax
 
-ipython.magic('load_ext', 'google.cloud.bigquery')
-# get_ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
+ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
 
 
 # 下記で最新の1000件をとってこれる。すべてを学習データにしたい場合はMAXとGROUPを外す。<br>
