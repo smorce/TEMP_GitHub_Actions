@@ -83,7 +83,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
 # In[6]:
 
 from google.cloud import storage
-storage_client = storage.Client.from_service_account_json(json_load)
+# storage_client = storage.Client.from_service_account_json(json_load)
 storage_client = storage.Client.from_service_account_json(str(json_load))
 print('aaa')
 client = storage.Client()
