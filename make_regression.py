@@ -76,11 +76,10 @@ df.to_csv('./data/df.csv', index=False)
 # In[6]:
 
 from google.cloud import storage
+# storage_client = storage.Client.from_service_account_json(service_account_key)
 print('aaa')
-storage_client = storage.Client.from_service_account_json(service_account_key)
-print('bbb')
 client = storage.Client()
-print('ccc')
+print('bbb')
 
 # https://console.cloud.google.com/storage/browser/[bucket-id]/
 bucket = client.get_bucket('mlops_1')
