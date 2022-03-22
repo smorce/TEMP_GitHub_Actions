@@ -28,4 +28,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python
-        run: python make_regression.py
+        run: python temp_make_regression.py
