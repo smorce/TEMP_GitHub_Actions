@@ -10,6 +10,7 @@
 
 import numpy as np
 import pandas as pd
+import os
 from sklearn.datasets import make_regression
 
 pd.set_option('display.max_rows', 500)
@@ -52,5 +53,6 @@ for k in df.keys():
 
 # In[3]:
 
+print(os.getcwd())
 
 df.to_csv('out.csv')
