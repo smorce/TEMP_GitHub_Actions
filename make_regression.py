@@ -73,8 +73,8 @@ import json
 json_open = open('credential.json', 'r')
 json_load = json.load(json_open)
 
-# print(json_load)
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = json_load
+print(json_load)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
 
 
 
