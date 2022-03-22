@@ -38,7 +38,7 @@ jobs:
             echo $service_account_key | base64 --decode > ./credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # デコードしたクレデンシャル情報をセットする
             python make_regression.py
-            del ./credential.json
+            rm credential.json
 
       - name: CSV commit
         run: |
