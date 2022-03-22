@@ -45,7 +45,9 @@ df = (
     .to_dataframe(
         # Optionally, explicitly request to use the BigQuery Storage API. As of
         # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
-        # API is used by default.
+        # create_bqstorage_client はデフォルトで True
+        # BigQuery Storage APIは、BigQueryから行をフェッチするためのより高速な方法で、True で使用する
+        # https://googleapis.dev/python/bigquery/latest/generated/google.cloud.bigquery.job.QueryJob.html
         create_bqstorage_client=True,
     )
 )
