@@ -28,7 +28,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python
-        run: python temp_make_regression.py
+        # Settingsを扱えるのは、リポジトリのオーナーのみ
+        # run内に書いたスクリプトでsecretが扱えるようになる
+        # https://qiita.com/developer-kikikaikai/items/60b209c065f076dca7a1
+        env:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}         # GCPのプロジェクトID
+          service_account_key: ${{ secrets.GCP_SA_KEY }}    # GCPのサービスアカウント
+        run: python make_regression.py
 
       - name: CSV commit
         run: |

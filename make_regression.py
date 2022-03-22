@@ -10,7 +10,6 @@
 
 import numpy as np
 import pandas as pd
-import os
 from sklearn.datasets import make_regression
 
 pd.set_option('display.max_rows', 500)
@@ -53,7 +52,48 @@ for k in df.keys():
 
 # In[3]:
 
-print(os.getcwd())
-print(df)
 
-df.to_csv('./data/out.csv')
+df.to_csv('./data/df.csv', index=False)
+
+
+# **作成した欠損データを GCS にアップロードする**
+
+# In[4]:
+
+
+# クレデンシャル情報が記載されたjsonファイルを設定（これで認証を自動的に通せる）
+import os
+project_id = os.environ.get('project_id')
+service_account_key = os.environ.get('service_account_key')
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
+
+
+# **CloudStorageに接続**
+
+# In[6]:
+
+
+from google.cloud import storage
+client = storage.Client()
+# https://console.cloud.google.com/storage/browser/[bucket-id]/
+bucket = client.get_bucket('mlops_1')
+
+
+# **CloudStorageにファイルをアップロードする**
+
+# In[11]:
+
+
+# 保存ファイル名（フォルダを指定することもできる）
+save_file_name = 'df.csv'
+# アップロードしたいファイルのパス
+uploaded_file_path = './data/df.csv'
+blob = bucket.blob(save_file_name)
+blob.upload_from_filename(filename=uploaded_file_path)
+
+
+# In[ ]:
+
+
+
+
