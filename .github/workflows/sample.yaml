@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  numpy-test:
+  python-Sample:
     runs-on: ubuntu-latest
     steps:
 
