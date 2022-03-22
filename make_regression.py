@@ -65,6 +65,9 @@ df.to_csv('./data/df.csv', index=False)
 import os
 project_id = os.environ.get('project_id')
 service_account_key = os.environ.get('service_account_key')
+
+print(service_account_key)
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
 
 
@@ -75,6 +78,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
 
 from google.cloud import storage
 client = storage.Client()
+print('aaa')
 # https://console.cloud.google.com/storage/browser/[bucket-id]/
 bucket = client.get_bucket('mlops_1')
 
