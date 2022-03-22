@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Python
+      - name: Run Python make_regression
         # Settingsを扱えるのは、リポジトリのオーナーのみ
         # run内に書いたスクリプトでsecretが扱えるようになる
         # https://qiita.com/developer-kikikaikai/items/60b209c065f076dca7a1
@@ -37,8 +37,17 @@ jobs:
         run: |
             echo $service_account_key | base64 --decode > ./credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # デコードしたクレデンシャル情報をセットする
-            python make_regression.py
-            rm credential.json
+            python make_regression.py                                         # スクリプト実行
+
+
+
+      - name: Run Python missing_value_completion
+        run: |
+            sleep 5m                                                          # 5分後に実行する
+            python missing_value_completion.py                                # スクリプト実行
+            rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
+
+
 
       - name: CSV commit
         run: |
