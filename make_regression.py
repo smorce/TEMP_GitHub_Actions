@@ -66,18 +66,19 @@ df.to_csv('./data/df.csv', index=False)
 # project_id = os.environ.get('project_id')
 # service_account_key = os.environ.get('service_account_key')
 
-# print(service_account_key)
-
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
+print(service_account_key)
 
 
 import json
 
-json_open = open('credential.json', 'r')
+json_open = open('./credential.json', 'r')
 json_load = json.load(json_open)
 
 print(json_load)
 
+
+
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
 
 
 # **CloudStorageに接続**
