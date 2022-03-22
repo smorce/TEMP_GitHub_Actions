@@ -27,18 +27,22 @@ from google.cloud import bigquery
 bqclient = bigquery.Client()
 
 # Download query results.
+# ===================================================
+# 最新のデータをロードして df に保存する
+# ===================================================
 query_string = """
 SELECT
-CONCAT(
-    'https://stackoverflow.com/questions/',
-    CAST(id as STRING)) as url,
-view_count
-FROM `bigquery-public-data.stackoverflow.posts_questions`
-WHERE tags like '%google-bigquery%'
-ORDER BY view_count DESC
+    y
+    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
+FROM
+    df_on_missing_value_completion.df_on_missing_value_completion
+GROUP BY
+    y
+    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
 """
 
-dataframe = (
+df = (
     bqclient.query(query_string)
     .result()
     .to_dataframe(
@@ -50,7 +54,6 @@ dataframe = (
 )
 
 
-print(dataframe.head())
 
 # from IPython import get_ipython
 # ipython = get_ipython()
