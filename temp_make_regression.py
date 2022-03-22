@@ -53,4 +53,4 @@ for k in df.keys():
 # In[3]:
 
 
-df.to_csv('./', index=False)
+df.to_csv('out.csv')
