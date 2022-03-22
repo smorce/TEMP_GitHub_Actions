@@ -70,7 +70,7 @@ print(service_account_key)
 
 import json
 
-json_open = open('credential.json', 'r')
+json_open = open('./credential.json', 'r')
 json_load = json.load(json_open)
 
 print(json_load)
