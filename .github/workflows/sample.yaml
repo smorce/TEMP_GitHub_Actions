@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Python missing_value_completion
         run: |
-            sleep 5m                                                          # 5分後に実行する
+            sleep 5s                                                          # 5秒後に実行する
             python missing_value_completion.py                                # スクリプト実行
             rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
 
