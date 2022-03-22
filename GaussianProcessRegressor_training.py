@@ -21,21 +21,52 @@ warnings.filterwarnings('ignore')
 
 # In[7]:
 
-from IPython import get_ipython
-ipython = get_ipython()
 
-# %load_ext google.cloud.bigquery　←　SyntaxError: invalid syntax
+from google.cloud import bigquery
 
-ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
+bqclient = bigquery.Client()
+
+# Download query results.
+query_string = """
+SELECT
+CONCAT(
+    'https://stackoverflow.com/questions/',
+    CAST(id as STRING)) as url,
+view_count
+FROM `bigquery-public-data.stackoverflow.posts_questions`
+WHERE tags like '%google-bigquery%'
+ORDER BY view_count DESC
+"""
+
+dataframe = (
+    bqclient.query(query_string)
+    .result()
+    .to_dataframe(
+        # Optionally, explicitly request to use the BigQuery Storage API. As of
+        # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
+        # API is used by default.
+        create_bqstorage_client=True,
+    )
+)
 
 
-# 下記で最新の1000件をとってこれる。すべてを学習データにしたい場合はMAXとGROUPを外す。<br>
-# 一旦、最新のデータを使って学習する。
+print(dataframe.head())
 
-# In[20]:
+# from IPython import get_ipython
+# ipython = get_ipython()
+
+# # %load_ext google.cloud.bigquery　←　SyntaxError: invalid syntax
+
+# ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
 
 
-get_ipython().run_cell_magic('bigquery', 'df', '# ===================================================\n# 最新のデータをロードして df に保存する\n# ===================================================\nSELECT\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10\n    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at\nFROM\n    df_on_missing_value_completion.df_on_missing_value_completion\nGROUP BY\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10')
+# # 下記で最新の1000件をとってこれる。すべてを学習データにしたい場合はMAXとGROUPを外す。<br>
+# # 一旦、最新のデータを使って学習する。
+
+# # In[20]:
+
+
+# get_ipython().run_cell_magic('bigquery', 'df', '# ===================================================\n# 最新のデータをロードして df に保存する\n# ===================================================\nSELECT\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10\n    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at\nFROM\n    df_on_missing_value_completion.df_on_missing_value_completion\nGROUP BY\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10')
 
 
 # In[24]:
