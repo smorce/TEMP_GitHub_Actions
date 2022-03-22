@@ -3,7 +3,7 @@ name: Action Sample
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: execute echo command
-        run: echo "Hello World!!!"
+        run: echo "実行しました！！"
