@@ -77,8 +77,12 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_key
 
 
 from google.cloud import storage
-client = storage.Client()
 print('aaa')
+storage_client = storage.Client.from_service_account_json(service_account_key)
+print('bbb')
+client = storage.Client()
+print('ccc')
+
 # https://console.cloud.google.com/storage/browser/[bucket-id]/
 bucket = client.get_bucket('mlops_1')
 
