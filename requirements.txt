@@ -3,6 +3,8 @@ pandas
 scikit-learn == 1.0.0
 google-cloud-bigquery
 google-cloud-storage
+google-cloud-bigquery-storage
+pyarrow
 matplotlib
 statsmodels
 ipython
