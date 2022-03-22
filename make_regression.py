@@ -65,8 +65,7 @@ df.to_csv('./data/df.csv', index=False)
 # import os
 # project_id = os.environ.get('project_id')
 # service_account_key = os.environ.get('service_account_key')
-
-print(service_account_key)
+# print(service_account_key)
 
 
 import json
