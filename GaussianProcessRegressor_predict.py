@@ -19,25 +19,38 @@ warnings.filterwarnings('ignore')
 
 # **BigQueryからデータをロードする**
 
-# In[4]:
+from google.cloud import bigquery
 
+bqclient = bigquery.Client()
 
-get_ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
+# Download query results.
+# ===================================================
+# 最新のデータをロードして df に保存する
+# ===================================================
+query_string = """
+SELECT
+    y
+    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
+FROM
+    df_on_missing_value_completion.df_on_missing_value_completion
+GROUP BY
+    y
+    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+"""
 
-
-# 下記で最新の1000件をとってくる
-
-# In[5]:
-
-
-get_ipython().run_cell_magic('bigquery', 'df', '# ===================================================\n# 最新のデータをロードして df に保存する\n# ===================================================\nSELECT\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10\n    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at\nFROM\n    df_on_missing_value_completion.df_on_missing_value_completion\nGROUP BY\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10')
-
-
-# In[6]:
-
+df = (
+    bqclient.query(query_string)
+    .result()
+    .to_dataframe(
+        # Optionally, explicitly request to use the BigQuery Storage API. As of
+        # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
+        # API is used by default.
+        create_bqstorage_client=True,
+    )
+)
 
 del df['_airbyte_emitted_at']
-
 
 # In[7]:
 

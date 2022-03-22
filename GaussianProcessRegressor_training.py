@@ -53,28 +53,6 @@ df = (
     )
 )
 
-
-
-# from IPython import get_ipython
-# ipython = get_ipython()
-
-# # %load_ext google.cloud.bigquery　←　SyntaxError: invalid syntax
-
-# ipython().run_line_magic('load_ext', 'google.cloud.bigquery')
-
-
-# # 下記で最新の1000件をとってこれる。すべてを学習データにしたい場合はMAXとGROUPを外す。<br>
-# # 一旦、最新のデータを使って学習する。
-
-# # In[20]:
-
-
-# get_ipython().run_cell_magic('bigquery', 'df', '# ===================================================\n# 最新のデータをロードして df に保存する\n# ===================================================\nSELECT\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10\n    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at\nFROM\n    df_on_missing_value_completion.df_on_missing_value_completion\nGROUP BY\n    y\n    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10')
-
-
-# In[24]:
-
-
 del df['_airbyte_emitted_at']
 
 

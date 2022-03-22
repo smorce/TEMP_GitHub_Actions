@@ -62,10 +62,20 @@ jobs:
 
 
 
-      - name: CSV commit
+      - name: Run Python GaussianProcessRegressor_predict
+        run: |
+            sleep 5s                                                          # 5秒後→1日後に実行する
+            echo $service_account_key | base64 --decode > ./credential.json   # ここは後で消す
+            export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
+            python GaussianProcessRegressor_predict.py                        # スクリプト実行
+            rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
+
+
+
+      - name: Files commit
         run: |
             git config --global user.email ${{secrets.EMAIL}}
             git config --global user.name ${{secrets.NAME}}
             git add -A
-            git commit -m "add CSV"
+            git commit -m "add Files"
             git push origin main
