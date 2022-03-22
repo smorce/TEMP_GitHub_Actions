@@ -61,34 +61,12 @@ df.to_csv('./data/df.csv', index=False)
 # In[4]:
 
 
-# クレデンシャル情報が記載されたjsonファイルを設定（これで認証を自動的に通せる）
-import os
-project_id = os.environ.get('project_id')
-service_account_key = os.environ.get('service_account_key')
-print(service_account_key)
-
-
-import json
-
-json_open = open('./credential.json', 'r')
-json_load = json.load(json_open)
-
-print(json_load)
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = str(json_load)
-
-
-
 # **CloudStorageに接続**
 
 # In[6]:
 
 from google.cloud import storage
-# storage_client = storage.Client.from_service_account_json(json_load)
-# storage_client = storage.Client.from_service_account_json(str(json_load))
-print('aaa')
 client = storage.Client()
-print('bbb')
-
 # https://console.cloud.google.com/storage/browser/[bucket-id]/
 bucket = client.get_bucket('mlops_1')
 
