@@ -113,7 +113,7 @@ plt.xlabel('Index Datapoint')
 plt.ylabel('Predicted Mean')
 plt.legend()
 
-plt.savefig('./artifact/Predicted_Mean.png', dpi=300, bbox_inches="tight")
+plt.savefig('./artifact/Predicted_Mean.png', dpi=100, bbox_inches="tight")
 plt.clf() # plt.clf() → plt.close() でメモリ解放
 plt.close('all')
 
@@ -122,6 +122,7 @@ plt.close('all')
 # pandas.to_gbq のやり方しか見つからなかった
 import os
 project_id = os.environ.get('project_id')
+# if_exists="replace" : 同じものがあったら上書き保存する
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
 
 
