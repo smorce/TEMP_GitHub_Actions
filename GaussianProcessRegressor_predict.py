@@ -54,11 +54,6 @@ df = (
 
 del df['_airbyte_emitted_at']
 
-# In[7]:
-
-
-df
-
 
 # # ガウス過程回帰モデルを読み込む
 
@@ -106,6 +101,51 @@ predicted_y_test_std = predicted_y_test_std * _dict['y_std']
 
 # In[25]:
 
+# # グラフ描画と保存
+index = df.index
+
+plt.rcParams['font.size'] = 12  # 横軸や縦軸の名前の文字などのフォントのサイズ
+
+plt.figure(figsize=(10, 5))
+plt.plot(index, predicted_y_test, color='navy', label='Predicted Mean')
+plt.fill_between(index, predicted_y_test-3.00*predicted_y_test_std, predicted_y_test+3.00*predicted_y_test_std, color='navy', alpha=0.2, label='Predicted Boundaries - 3sigma')
+plt.xlabel('Index Datapoint')
+plt.ylabel('Predicted Mean')
+plt.legend()
+
+plt.savefig('./artifact/Predicted_Mean.png', dpi=300, bbox_inches="tight")
+plt.clf() # plt.clf() → plt.close() でメモリ解放
+plt.close('all')
+
+
+# # 予測結果をBigQueryに書き込む
+# pandas.to_gbq のやり方しか見つからなかった
+
+project_id = os.environ.get('project_id')
+df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
+
+
+
+# Set the destination table and use_legacy_sql to True to use
+# legacy SQL syntax.
+# https://cloud.google.com/bigquery/docs/writing-results?hl=ja#python
+# table_id = "turing-mark-331312.df_on_missing_value_completion.predicted_df_on_missing_value_completion"
+
+# job_config = bigquery.QueryJobConfig(
+#     allow_large_results=True, destination=table_id, use_legacy_sql=True
+# )
+
+# sql = """
+#     SELECT corpus
+#     FROM [bigquery-public-data:samples.shakespeare]
+#     GROUP BY corpus;
+# """
+
+# # Start the query, passing in the extra configuration.
+# query_job = client.query(sql, job_config=job_config)  # Make an API request.
+# query_job.result()  # Wait for the job to complete.
+
+# print("Query results loaded to the table {}".format(table_id))
 
 
 
