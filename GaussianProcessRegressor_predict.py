@@ -120,7 +120,7 @@ plt.close('all')
 
 # # 予測結果をBigQueryに書き込む
 # pandas.to_gbq のやり方しか見つからなかった
-
+import os
 project_id = os.environ.get('project_id')
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
 
