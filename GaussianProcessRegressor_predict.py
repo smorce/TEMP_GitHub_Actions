@@ -154,7 +154,7 @@ for i in range(len(df)):
         True
     outlier_spec.append(o)
 
-df['Outlier Type'] = outlier_spec
+df['Outlier_Type'] = outlier_spec
 
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
 
