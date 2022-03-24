@@ -123,6 +123,39 @@ plt.close('all')
 import os
 project_id = os.environ.get('project_id')
 # if_exists="replace" : 同じものがあったら上書き保存する
+
+# df に予測値を入れる
+df['GPR_Mean_Predicted'] = predicted_y_test
+df['GPR_Upper_Boundary_on3sigma']= predicted_y_test+3.00*predicted_y_test_std
+df['GPR_Lower_Boundary_on3sigma']= predicted_y_test-3.00*predicted_y_test_std
+
+
+outlier = []
+
+for i in range(len(df)):
+    o = "Non Outlier"
+    if df['y'].loc[i]<=df['GPR_Upper_Boundary_on3sigma'].loc[i] and df['y'].loc[i]>=df['GPR_Lower_Boundary_on3sigma'].loc[i]:
+        True
+    else:
+        o="Outlier"
+    outlier.append(o)
+
+df['Outlier']=outlier
+
+outlier_spec = []
+
+for i in range(len(df)):
+    o = "Non Outlier"
+    if df['y'].loc[i]>=df['GPR_Upper_Boundary_on3sigma'].loc[i]:
+        o = "Upper Outlier"
+    if df['y'].loc[i]<=df['GPR_Lower_Boundary_on3sigma'].loc[i]:
+        o = "Lower Outlier"
+    else:
+        True
+    outlier_spec.append(o)
+
+df['Outlier Type'] = outlier_spec
+
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
 
 
