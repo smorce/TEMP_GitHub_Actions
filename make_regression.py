@@ -11,6 +11,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.datasets import make_regression
+import random
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -26,7 +27,12 @@ warnings.filterwarnings('ignore')
 # ランダムな値を生成するため random_state は固定しない
 
 n_features = 10
-X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=80)
+# 通常のノイズ設定
+noise = 10
+# 20回に1回の割合で200のノイズ設定になる
+if random.randint(1, 20) // 20 == 1:
+    noise = 200
+X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
 X_raw = X_raw * 100
 
 # pandas.DataFrame 形式に変換
