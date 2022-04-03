@@ -28,18 +28,18 @@ bqclient = bigquery.Client()
 
 # Download query results.
 # ===================================================
-# 最新のデータをロードして df に保存する
+# 全データをロードして df に保存する
 # ===================================================
 query_string = """
 SELECT
     y
     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-    ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
+    # ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
 FROM
     df_on_missing_value_completion.df_on_missing_value_completion
-GROUP BY
-    y
-    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+# GROUP BY
+#     y
+#     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
 """
 
 df = (
@@ -125,6 +125,10 @@ predicted_y_test_std = predicted_y_test_std * y_train.std(ddof=1)
 # 構築したモデルの保存
 filename = './GaussianProcessRegressor.pkl'
 pickle.dump(model, open(filename, 'wb'))
+
+# 初回トレーニングに使用したデータの保存
+# ドリフトチェックで必要
+df.to_csv('./data/training.csv', index=False)
 
 
 # # 予測するときに標準化したものを割り戻さないといけないので平均値と標準偏差も保存する

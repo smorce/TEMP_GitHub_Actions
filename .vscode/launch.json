@@ -1,0 +1,13 @@
+# VSCodeでデバッグ実行するための設定ファイルとなります。どの言語でどのファイルを実行するかなどを設定します。
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python3.9 開発環境",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "internalConsole"
+        }
+    ]
+}

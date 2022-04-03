@@ -52,7 +52,8 @@ df = (
     )
 )
 
-del df['_airbyte_emitted_at']
+# 予測時の日付データは消さない。どのタイミングのデータを使って予測したのかを記録する
+# del df['_airbyte_emitted_at']
 
 
 # # ガウス過程回帰モデルを読み込む
@@ -118,7 +119,7 @@ plt.clf() # plt.clf() → plt.close() でメモリ解放
 plt.close('all')
 
 
-# # 予測結果をBigQueryに書き込む
+# # 入力データと予測結果をBigQueryに書き込む
 # pandas.to_gbq のやり方しか見つからなかった
 import os
 project_id = os.environ.get('project_id')

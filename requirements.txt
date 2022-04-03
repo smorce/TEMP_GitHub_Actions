@@ -2,10 +2,11 @@ numpy >= 1.2
 pandas
 pandas-gbq
 scikit-learn == 1.0.0
-google-cloud-bigquery
-google-cloud-storage
+# google-cloud-bigquery　いらない？
+# google-cloud-storage　いらない？
 google-cloud-bigquery-storage
 pyarrow
 matplotlib
 statsmodels
 ipython
+# fastapi[all]
