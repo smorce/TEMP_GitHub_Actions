@@ -14,7 +14,7 @@ pd.set_option('display.max_columns', 500)
 import warnings
 warnings.filterwarnings('ignore')
 
-df = pd.read_csv('../../data/df.csv')
+df = pd.read_csv('./data/df.csv')
 
 
 # **欠損値補完（MICE）**
@@ -59,7 +59,7 @@ for col, i in dict_mice_sorted:
 # In[10]:
 
 
-df.to_csv('../../data/df_on_missing_value_completion.csv', index=False)
+df.to_csv('./data/df_on_missing_value_completion.csv', index=False)
 
 
 # **作成した欠損データを GCS にアップロードする**
@@ -85,7 +85,7 @@ bucket = client.get_bucket('mlops_1')
 # 保存ファイル名（フォルダを指定することもできる）
 save_file_name = 'df_on_missing_value_completion.csv'
 # アップロードしたいファイルのパス
-uploaded_file_path = '../../data/df_on_missing_value_completion.csv'
+uploaded_file_path = './data/df_on_missing_value_completion.csv'
 blob = bucket.blob(save_file_name)
 blob.upload_from_filename(filename=uploaded_file_path)
 

@@ -128,19 +128,14 @@ predicted_y_test_std = predicted_y_test_std * y_train.std(ddof=1)
 # # 学習したモデルをpickleで保存する
 
 # In[39]:
-import os
-path = os.getcwd()
-
-print(path)
-
 
 # 構築したモデルの保存
-filename = '../../models/GaussianProcessRegressor.pkl'
+filename = "./models/GaussianProcessRegressor.pkl"
 pickle.dump(model, open(filename, 'wb'))
 
 # 初回トレーニングに使用したデータの保存
 # ドリフトチェックで必要
-df.to_csv('../../data/training.csv', index=False)
+df.to_csv("./data/training.csv", index=False)
 
 
 # # 予測するときに標準化したものを割り戻さないといけないので平均値と標準偏差も保存する
@@ -149,6 +144,6 @@ df.to_csv('../../data/training.csv', index=False)
 
 
 _dict = {'y_mean' : y_train.mean(), 'y_std' : y_train.std(ddof=1)}
-pickle.dump(_dict, open("../../data/mean_and_std.txt", "wb") )
+pickle.dump(_dict, open("./data/mean_and_std.txt", "wb") )
 
 

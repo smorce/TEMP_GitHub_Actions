@@ -24,7 +24,7 @@ class Model():
 
 
     def load_model(self):
-        filepath = '../../models/GaussianProcessRegressor.pkl'
+        filepath = "../models/GaussianProcessRegressor.pkl"
         _model = pickle.load(open(filepath,'rb'))
         return _model
 
@@ -90,12 +90,12 @@ class Model():
         # **推論する**
 
         # 予測に必要な平均値と標準偏差を読み込む
-        filename = '../../data/mean_and_std.txt'
+        filename = "../data/mean_and_std.txt"
         _dict = pickle.load(open(filename, 'rb'))
 
 
         # 学習で使ったデータを読み込む(使わない。後で使うかも)
-        # filename = '../../data/training.csv'
+        # filename = "../data/training.csv"
         # training = pd.read_csv(filename)
         # 学習時の最新の日付
         # last_training_date = training._airbyte_emitted_at.max()
@@ -142,7 +142,7 @@ class Model():
         plt.ylabel('Predicted Mean')
         plt.legend()
 
-        plt.savefig('../../artifact/Predicted_Mean.png', dpi=100, bbox_inches="tight")
+        plt.savefig("../artifact/Predicted_Mean.png", dpi=100, bbox_inches="tight")
         plt.clf() # plt.clf() → plt.close() でメモリ解放
         plt.close('all')
 

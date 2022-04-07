@@ -59,7 +59,7 @@ for k in df.keys():
 # In[3]:
 
 
-df.to_csv('../../data/df.csv', index=False)
+df.to_csv('./data/df.csv', index=False)
 
 
 # **作成した欠損データを GCS にアップロードする**
@@ -85,7 +85,7 @@ bucket = client.get_bucket('mlops_1')
 # 保存ファイル名（フォルダを指定することもできる）
 save_file_name = 'df.csv'
 # アップロードしたいファイルのパス
-uploaded_file_path = '../../data/df.csv'
+uploaded_file_path = './data/df.csv'
 blob = bucket.blob(save_file_name)
 blob.upload_from_filename(filename=uploaded_file_path)
 
