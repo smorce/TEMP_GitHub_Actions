@@ -49,13 +49,13 @@ jobs:
       #       export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
       #       python missing_value_completion.py                                # スクリプト実行
 
-      # - name: Run Python GaussianProcessRegressor_first_training
-      #   run: |
-      #       sleep 5s                                                          # 5秒後→1日後に実行する
-      #       echo $service_account_key | base64 --decode > ./credential.json   # ここは後で消す
-      #       export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
-      #       python src/ml/fisrt_training.py                                   # スクリプト実行
-      #       rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
+      - name: Run Python GaussianProcessRegressor_first_training
+        run: |
+            sleep 5s                                                          # 5秒後→1日後に実行する
+            echo $service_account_key | base64 --decode > ./credential.json   # ここは後で消す
+            export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
+            python src/ml/fisrt_training.py                                   # スクリプト実行
+            rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
 
 
 
