@@ -28,15 +28,20 @@ bqclient = bigquery.Client()
 
 # Download query results.
 # ===================================================
-# 全データをロードして df に保存する
+# 全データをロードして df に保存する　→　超時間がかかるのでランダムサンプルしてLIMITをかける
 # ===================================================
 query_string = """
 SELECT
     y
     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    ,rand() AS random
     # ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
 FROM
     df_on_missing_value_completion.df_on_missing_value_completion
+ORDER BY
+    random
+LIMIT
+    1000
 # GROUP BY
 #     y
 #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
@@ -97,6 +102,8 @@ kernels = [ConstantKernel() * DotProduct() + WhiteKernel(),
 autoscaled_x_train = (x_train - x_train.mean(axis=0)) / x_train.std(axis=0, ddof=1)
 autoscaled_y_train = (y_train - y_train.mean()) / y_train.std(ddof=1)
 autoscaled_x_test = (x_test - x_train.mean(axis=0)) / x_train.std(axis=0, ddof=1)
+
+print("!----- トレーニングを開始します -----!")
 
 # Gaussian process regression
 cv_model = GridSearchCV(GaussianProcessRegressor(alpha=0), {'kernel': kernels}, cv=K_FOLD)
