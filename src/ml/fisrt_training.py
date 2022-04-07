@@ -46,7 +46,7 @@ LIMIT
 #     y
 #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
 """
-
+print("!----- データ集計中… -----!")
 df = (
     bqclient.query(query_string)
     .result()
@@ -59,6 +59,7 @@ df = (
         create_bqstorage_client=True,
     )
 )
+print("!----- 集計が完了しました -----!")
 
 # del df['_airbyte_emitted_at']
 
@@ -103,7 +104,7 @@ autoscaled_x_train = (x_train - x_train.mean(axis=0)) / x_train.std(axis=0, ddof
 autoscaled_y_train = (y_train - y_train.mean()) / y_train.std(ddof=1)
 autoscaled_x_test = (x_test - x_train.mean(axis=0)) / x_train.std(axis=0, ddof=1)
 
-print("!----- トレーニングを開始します -----!")
+print("!----- トレーニングが完了しました -----!")
 
 # Gaussian process regression
 cv_model = GridSearchCV(GaussianProcessRegressor(alpha=0), {'kernel': kernels}, cv=K_FOLD)
@@ -111,6 +112,8 @@ cv_model.fit(autoscaled_x_train, autoscaled_y_train)
 optimal_kernel = cv_model.best_params_['kernel']
 model = GaussianProcessRegressor(optimal_kernel, alpha=0)
 model.fit(autoscaled_x_train, autoscaled_y_train)
+
+print("!----- トレーニングを開始します -----!")
 
 # calculate y in training data
 calculated_y_train = model.predict(autoscaled_x_train) * y_train.std(ddof=1) + y_train.mean()
@@ -125,6 +128,11 @@ predicted_y_test_std = predicted_y_test_std * y_train.std(ddof=1)
 # # 学習したモデルをpickleで保存する
 
 # In[39]:
+import os
+path = os.getcwd()
+
+print(path)
+
 
 # 構築したモデルの保存
 filename = '../../models/GaussianProcessRegressor.pkl'
