@@ -7,6 +7,8 @@ ENV PYTHONUNBUFFERED=1
 # WORKDIR・・・RUNコマンドを実行する際の作業ディレクトリを指定します。必須。
 WORKDIR /workspaces/GitHub_Actions
 
+COPY requirements.txt .
+
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
 # Visual Studio CodeのRemote Development 拡張機能を利用すると、
