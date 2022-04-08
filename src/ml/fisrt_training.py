@@ -41,7 +41,7 @@ FROM
 ORDER BY
     random
 LIMIT
-    1000
+    3000
 # GROUP BY
 #     y
 #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
@@ -104,7 +104,7 @@ autoscaled_x_train = (x_train - x_train.mean(axis=0)) / x_train.std(axis=0, ddof
 autoscaled_y_train = (y_train - y_train.mean()) / y_train.std(ddof=1)
 autoscaled_x_test = (x_test - x_train.mean(axis=0)) / x_train.std(axis=0, ddof=1)
 
-print("!----- トレーニングが完了しました -----!")
+print("!----- トレーニングを開始します… -----!")
 
 # Gaussian process regression
 cv_model = GridSearchCV(GaussianProcessRegressor(alpha=0), {'kernel': kernels}, cv=K_FOLD)
@@ -113,7 +113,7 @@ optimal_kernel = cv_model.best_params_['kernel']
 model = GaussianProcessRegressor(optimal_kernel, alpha=0)
 model.fit(autoscaled_x_train, autoscaled_y_train)
 
-print("!----- トレーニングを開始します -----!")
+print("!----- トレーニングが完了しました -----!")
 
 # calculate y in training data
 calculated_y_train = model.predict(autoscaled_x_train) * y_train.std(ddof=1) + y_train.mean()
