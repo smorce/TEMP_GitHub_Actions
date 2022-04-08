@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from api import schemas as schema
+from src.api import schemas as schema
 
 from src.ml.predict import Model
 

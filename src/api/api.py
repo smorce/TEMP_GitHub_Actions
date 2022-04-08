@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api import routers
+from src.api import routers
 
 # Swagger UI に表示するため、作成した router インスタンスを、FastAPIインスタンスに取り込む
 app = FastAPI()
