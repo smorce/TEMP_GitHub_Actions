@@ -12,7 +12,8 @@ services:
       # 現在のディレクトリをマウントします。もしかしたら僕のやりたいことはできなくて、compose ファイルは最上位のディレクトリに置いてマウントしないといけないのかもしれない
       - .:/home/projects:cached
     ports:
-      - "4200:4200"  # ホストマシンのポート4200を、docker内のポート4200に接続する
+      # - "4200:4200"  # ホストマシンのポート4200を、docker内のポート4200に接続する
+      - 4200:4200  # ホストマシンのポート4200を、docker内のポート4200に接続する
     environment:
       # environmentのCHOKIDAR_USEPOLLING=true・・・ホットリロード（プログラムの変更を瞬時にUIに反映する機能）を有効にするために記述します。
       - CHOKIDAR_USEPOLLING=true
