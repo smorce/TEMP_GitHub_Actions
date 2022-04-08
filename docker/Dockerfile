@@ -35,7 +35,8 @@ RUN python -m pip install --upgrade pip && \
 # Paste the folder
 # COPY ./api api
 # どのポートを公開するかを明示します。4200ポートの公開を明示します。
-EXPOSE 4200   # ←　devcontainer.json で指定しているので不要
+# ←　devcontainer.json で指定しているので不要
+EXPOSE 4200
 # CMDは原則は末尾に記載。コンテナ起動時に実行するコマンドとオプションを変更できます。
 # CMD ["uvicorn", "api.predictAPI:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]
 CMD ["uvicorn", "src.api.api:app", "--host", "localhost", "--port", "4200", "--reload"]
