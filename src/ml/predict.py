@@ -47,6 +47,8 @@ class Model():
         GROUP BY
             y
             ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+        LIMIT
+            1000
         """
         self.df = (
             bqclient.query(query_string)

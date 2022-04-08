@@ -45,11 +45,18 @@ async def predict():
     """
     # Modelクラスのインスタンス作成
     # model = Model(path=path)
+    print("!----- モデルのインスタンスを作成します -----!")
     model = Model()
-
+    print("!----- インスタンスの作成が完了しました -----!")
+    print("!----- 予測を開始します -----!")
     model.predict()
+    print("!----- 予測が完了しました -----!")
+    print("!----- グラフの描画と保存をします -----!")
     model.make_save_figure()
+    print("!----- グラフの描画と保存が完了しました -----!")
+    print("!----- 予測結果をBigQueryにアップロードします -----!")
     model.insert()
+    print("!----- アップロードが完了しました -----!")
 
     if model.df['Outlier_Type'] == None:
         raise HTTPException(status_code=400, detail="Results not found.")
