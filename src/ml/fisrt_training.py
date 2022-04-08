@@ -41,7 +41,7 @@ FROM
 ORDER BY
     random
 LIMIT
-    1500
+    1500    # 3000にすると20分以上かかる
 # GROUP BY
 #     y
 #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
