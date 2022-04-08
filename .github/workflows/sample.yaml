@@ -62,7 +62,6 @@ jobs:
       - name: Run Docker Container Deployment
         run: |
             sleep 5s                                                          # 5秒後
-            cd .devcontainer                                                  # GitHub_Actions ディレクトリから移動
             docker-compose up --build                                         # docker-compose を使ってビルドする。ビルドすると自動的にユニコーンサーバが立ち上がりAPIが起動する
             curl localhost:4200/health                                        # API をコールする
 

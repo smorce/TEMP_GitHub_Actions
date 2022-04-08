@@ -13,7 +13,8 @@ from pydantic import BaseModel, Field
 class Result(BaseModel):
     # result: dict = Field(None, description="推論結果。結果はdfになっている", example=" 'result_message': 'Predicted data inserted','Predicted_data': df ")
     result_message: str
-    Predicted_data: pd.DataFrame = Field(None, description="推論結果。結果はdfになっている")
+    # pandas のバリデーションは難しいのでなし
+    # Predicted_data: pd.DataFrame = Field(None, description="推論結果。結果はdfになっている")
 
 
 # Optionalは、指定の型 or Noneを、許容する型です。

@@ -2,13 +2,15 @@ version: '3'
 services:
   # 名前
   gpr-app:
-    # build・・・カレントフォルダのDockerfileからイメージを構築します。
-    build: .
+    # build・・・dockerフォルダのDockerfileからイメージを構築します。
+    build:
+      context: .   # 必要っぽい
+      dockerfile: ./docker/Dockerfile
     volumes:
       # volumes・・・ホスト側のフォルダと、コンテナ内のフォルダをマウントします。
       # Docker Compose には独自のプロジェクトの概念があり、デフォルトではymlが置かれたカレントディレクトリがプロジェクト名とされる
-      # 開発用に現在のディレクトリをworkspacesへマウントします。
-      - ..:/workspaces/GitHub_Actions:cached
+      # 現在のディレクトリをマウントします。もしかしたら僕のやりたいことはできなくて、compose ファイルは最上位のディレクトリに置いてマウントしないといけないのかもしれない
+      - .:/home/projects:cached
     ports:
       - "4200:4200"  # ホストマシンのポート4200を、docker内のポート4200に接続する
     environment:

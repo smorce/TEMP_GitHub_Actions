@@ -5,9 +5,13 @@ FROM tiangolo/uvicorn-gunicorn-fastapi
 ENV PYTHONUNBUFFERED=1
 
 # WORKDIR・・・RUNコマンドを実行する際の作業ディレクトリを指定します。必須。
-WORKDIR /workspaces/GitHub_Actions
+WORKDIR /home/projects
 
-COPY requirements.txt .
+# 必須。これをやらないと requirements でインストールできない
+# ファイルは全部必要なので、マウント先に全部コピーする
+# COPY . /projects
+# 全部じゃなくて下記に修正してみたけど問題ないっぽい
+COPY etc/requirements.txt /tmp/requirements.txt
 
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
@@ -15,7 +19,7 @@ COPY requirements.txt .
 # Visual Studio CodeのGitの機能はコンテナ側で動作します。
 # そのため、コンテナ側にもGitのインストールが必要になります。
 RUN python -m pip install --upgrade pip && \
-    pip install -r requirements.txt && \
+    pip install -r /tmp/requirements.txt && \
     apt-get update && apt-get -y install git && apt-get -y install zsh && \
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true && \
     chsh -s /usr/bin/zsh && \
