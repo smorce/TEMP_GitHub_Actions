@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /workspaces/GitHub_Actions
 
 # RUN ls
-RUN cd ..
+# RUN cd ..
 COPY requirements.txt .
 # COPY ./requirements.txt .
 # COPY ../requirements.txt .
