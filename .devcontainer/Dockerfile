@@ -9,9 +9,9 @@ WORKDIR /workspaces/GitHub_Actions
 
 # RUN ls
 # RUN cd ..
-COPY requirements.txt .
-# COPY ./requirements.txt .
-# COPY ../requirements.txt .
+# COPY requirements.txt .  ダメ
+# COPY ./requirements.txt .  ダメ
+# COPY ../requirements.txt .  ダメ
 
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
