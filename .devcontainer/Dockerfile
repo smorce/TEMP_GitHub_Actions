@@ -8,8 +8,9 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /workspaces/GitHub_Actions
 
 # RUN ls
-# COPY requirements.txt .
-COPY ./requirements.txt .
+RUN cd ..
+COPY requirements.txt .
+# COPY ./requirements.txt .
 # COPY ../requirements.txt .
 
 # 修正したソースコードをGitリポジトリにアップするために
