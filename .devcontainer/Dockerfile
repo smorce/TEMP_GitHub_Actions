@@ -32,5 +32,4 @@ RUN python -m pip install --upgrade pip && \
 # EXPOSE 4200　←　devcontainer.json で指定しているので不要
 # CMDは原則は末尾に記載。コンテナ起動時に実行するコマンドとオプションを変更できます。
 # CMD ["uvicorn", "api.predictAPI:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]
-# CMD ["uvicorn", "src.api.api:app", "--host", "localhost", "--port", "4200", "--reload"]
-CMD ["uvicorn", "api.api:app", "--host", "localhost", "--port", "4200", "--reload"]
+CMD ["uvicorn", "src.api.api:app", "--host", "localhost", "--port", "4200", "--reload"]
