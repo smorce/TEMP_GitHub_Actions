@@ -6,9 +6,8 @@ services:
     build: .
     volumes:
       # volumes・・・ホスト側のフォルダと、コンテナ内のフォルダをマウントします。
-      # 開発用に1つ上のディレクトリをworkspacesへマウントします。
       # Docker Compose には独自のプロジェクトの概念があり、デフォルトではymlが置かれたカレントディレクトリがプロジェクト名とされる
-      # - ..:/workspaces/GitHub_Actions:cached
+      # 開発用に現在のディレクトリをworkspacesへマウントします。
       - .:/workspaces/GitHub_Actions:cached
     ports:
       - "4200:4200"  # ホストマシンのポート4200を、docker内のポート4200に接続する
