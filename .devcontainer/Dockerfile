@@ -5,7 +5,7 @@ FROM tiangolo/uvicorn-gunicorn-fastapi
 ENV PYTHONUNBUFFERED=1
 
 # WORKDIR・・・RUNコマンドを実行する際の作業ディレクトリを指定します。必須。
-WORKDIR /workspaces/python-test-8
+WORKDIR /workspaces/GitHub_Actions
 
 COPY requirements.txt .
 
