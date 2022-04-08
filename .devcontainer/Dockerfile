@@ -7,8 +7,7 @@ ENV PYTHONUNBUFFERED=1
 # WORKDIR・・・RUNコマンドを実行する際の作業ディレクトリを指定します。必須。
 WORKDIR /workspaces/GitHub_Actions
 
-RUN pwd
-COPY ./requirements.txt .
+COPY requirements.txt .
 
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
