@@ -24,6 +24,9 @@ class Task(BaseModel):　　←　下記の schema.Task がこれ
 async def list_tasks():
     return [schema.Task(id=1, title="1つ目のTODOタスク")]
 """
+@router.get("")
+async def hello():
+    return {"message": "hello world!"}
 
 # GET: データの取得
 @router.get("/health")
