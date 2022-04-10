@@ -9,9 +9,8 @@ WORKDIR /home/projects
 
 # 必須。これをやらないと requirements でインストールできない
 # ファイルは全部必要なので、マウント先に全部コピーする
-# COPY . /projects
-# 全部じゃなくて下記に修正してみたけど問題ないっぽい
-COPY etc/requirements.txt /tmp/requirements.txt
+# これをやらないと /home/projects 下は空っぽだった。マウントするだけではなにもファイルが存在しない
+COPY . /home/projects
 
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
@@ -19,7 +18,7 @@ COPY etc/requirements.txt /tmp/requirements.txt
 # Visual Studio CodeのGitの機能はコンテナ側で動作します。
 # そのため、コンテナ側にもGitのインストールが必要になります。
 RUN python -m pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt && \
+    pip install -r etc/requirements.txt && \
     apt-get update && apt-get -y install git && apt-get -y install zsh && \
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true && \
     chsh -s /usr/bin/zsh && \
@@ -38,5 +37,7 @@ RUN python -m pip install --upgrade pip && \
 # ←　devcontainer.json で指定しているので不要
 # EXPOSE 4200
 # CMDは原則は末尾に記載。コンテナ起動時に実行するコマンドとオプションを変更できます。
-# CMD ["uvicorn", "src.api.api:app", "--host", "localhost", "--port", "4200", "--reload"]
+# nohup & は無理だった
+# localhost じゃ起動できない。0.0.0.0 が正しい
+# CMD ["uvicorn", "src.api.api:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]
 CMD ["uvicorn", "src.api.api:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]

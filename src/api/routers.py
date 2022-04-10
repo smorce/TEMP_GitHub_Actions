@@ -1,7 +1,11 @@
+import sys
 from fastapi import APIRouter, HTTPException
 
-from src.api import schemas as schema
-from src.ml.predict import Model
+import schemas as schema
+# predict を読み込むために相対パスを追加
+sys.path.append('src/ml')
+# from src.ml.predict では読み込めなかった
+from predict import Model
 
 router = APIRouter()
 
@@ -61,12 +65,13 @@ async def predict():
     model.insert()
     print("!----- アップロードが完了しました -----!")
 
-    if model.df['Outlier_Type'] == None:
+    # Outlier_Type の値が何もなければエラーを返す
+    if model.df['Outlier_Type'].max() == None:
         raise HTTPException(status_code=400, detail="Results not found.")
     else:
         result_dict = {
         "result_message": 'Predicted data inserted',
         "Predicted_data": model.df
         }
-        # return result_dict　←　この書き方でも良い
+        # return result_dict　←　この書き方でも良いが分かりづらいのでやめた
         return schema.Result(**result_dict)

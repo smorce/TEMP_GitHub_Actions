@@ -16,7 +16,6 @@ class Result(BaseModel):
     # pandas のバリデーションは難しいのでなし
     # Predicted_data: pd.DataFrame = Field(None, description="推論結果。結果はdfになっている")
 
-
 # Optionalは、指定の型 or Noneを、許容する型です。
 # 例えば str と None のいずれかを許容する場合は Optional[str] とします。
 # Field で色々情報を付与

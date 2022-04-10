@@ -16,7 +16,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-
 # **BigQueryからデータをロードする**
 
 # In[7]:
@@ -82,7 +81,7 @@ K_FOLD = 5
 
 # dataset(array型)
 y = df.y.values
-x = df.drop(columns='y').values
+x = df.drop(columns=['y','random']).values
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0)
 

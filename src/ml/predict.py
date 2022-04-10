@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import pickle
 # 実行上問題ないwarningは非表示にする
 import warnings
@@ -24,7 +25,7 @@ class Model():
 
 
     def load_model(self):
-        filepath = "../models/GaussianProcessRegressor.pkl"
+        filepath = "./models/GaussianProcessRegressor.pkl"
         _model = pickle.load(open(filepath,'rb'))
         return _model
 
@@ -33,6 +34,7 @@ class Model():
         # **予測するためBigQueryからユーザのログデータをロードする**
         from google.cloud import bigquery
         bqclient = bigquery.Client()
+        print("!----- BigQueryから予測用のデータを読み込みます -----!")
         # Download query results.
         # ===================================================
         # 最新のデータをロードして df に保存する
@@ -86,13 +88,14 @@ class Model():
         #     )
         # )
         # last_prediction_date = predicted['last_prediction']
+        print("!----- BigQueryから予測用のデータを読み込みました -----!")
 
 
     def predict(self):
         # **推論する**
 
         # 予測に必要な平均値と標準偏差を読み込む
-        filename = "../data/mean_and_std.txt"
+        filename = "./data/mean_and_std.txt"
         _dict = pickle.load(open(filename, 'rb'))
 
 
@@ -115,7 +118,7 @@ class Model():
 
         # dataset(array型)
         # y = df.y.values
-        x = self.df.drop(columns='y').values
+        x = self.df.drop(columns=['y','_airbyte_emitted_at']).values
 
         # autoscaling(標準化)
         autoscaled_x = (x - x.mean(axis=0)) / x.std(axis=0, ddof=1)
@@ -144,7 +147,7 @@ class Model():
         plt.ylabel('Predicted Mean')
         plt.legend()
 
-        plt.savefig("../artifact/Predicted_Mean.png", dpi=100, bbox_inches="tight")
+        plt.savefig("./artifact/Predicted_Mean.png", dpi=100, bbox_inches="tight")
         plt.clf() # plt.clf() → plt.close() でメモリ解放
         plt.close('all')
 
