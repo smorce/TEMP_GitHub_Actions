@@ -31,6 +31,11 @@
   # App Engin
   # Firebase
 
+# Cloud Build は、特別なサービス アカウントを使用してユーザーの代わりにビルドを実行します。
+# Cloud Build サービス アカウントにタスクの実行に必要な権限が付与されていない場合は、次のエラーが表示されます。
+# Missing necessary permission iam.serviceAccounts.actAs for [USER] on the service account
+# [CLOUD_BUILD_SERVICE_ACCOUNT]@PROJECT.iam.gserviceaccount.com
+
 # Cloud Run とは？
 # 自分で作ったコンテナを、Googleが用意したサーバー環境上で動かすことができます。
 # http(s) の口を持ったWebサイト/Web APIサーバーを手軽に作れて、スケーリングも勝手に面倒見てくれます。
