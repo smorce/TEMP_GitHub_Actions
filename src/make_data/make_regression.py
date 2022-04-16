@@ -33,6 +33,7 @@ noise = 10
 # 20回に1回の割合で200のノイズ設定になる
 if random.randint(1, 20) // 20 == 1:
     noise = 200
+print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
 # X の値が小さいので100倍する
 X_raw = X_raw * 100
