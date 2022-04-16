@@ -17,7 +17,7 @@
 # $BRANCH_NAME: ブランチの名前
 # $TAG_NAME: タグの名前
 
-# Cloud Buildとは
+# Cloud Build とは？
 # Cloud BuildとはCI/CDを簡単にできるGCPのサービスです。
 # 似たようなサービスとしてはGitHub Actions, CircleCI, AWS CodeBuild等があります。
 # ビルド、テスト、デプロイなどを実行してくれる従量課金制なビルドサービスです。
@@ -30,6 +30,11 @@
   # GKE
   # App Engin
   # Firebase
+
+# Cloud Run とは？
+# 自分で作ったコンテナを、Googleが用意したサーバー環境上で動かすことができます。
+# http(s) の口を持ったWebサイト/Web APIサーバーを手軽に作れて、スケーリングも勝手に面倒見てくれます。
+
 
 # デフォルトは cloudbuild.yaml ですが、ビルドコマンド実行時にオプション -config で任意のファイル名を指定することも可能です。
 # cloudbuild.yaml は ソースの一番上の階層のディレクトリ直下に作成してください。

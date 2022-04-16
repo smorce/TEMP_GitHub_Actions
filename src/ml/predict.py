@@ -101,7 +101,7 @@ filename = "./data/mean_and_std.txt"
 _dict = pickle.load(open(filename, 'rb'))
 
 
-# 学習で使ったデータを読み込む(使わない。後で使うかも)
+# 学習で使ったデータを読み込む(使わない。ドリフトチェックで使うかも)
 # filename = "../data/training.csv"
 # training = pd.read_csv(filename)
 # 学習時の最新の日付

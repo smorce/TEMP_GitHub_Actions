@@ -51,7 +51,7 @@ jobs:
             python src/ml/training.py                                         # スクリプト実行
             rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
 
-      - name: Files commit
+      - name: retrain model commit
         run: |
             git config --global user.email ${{secrets.EMAIL}}
             git config --global user.name ${{secrets.NAME}}
