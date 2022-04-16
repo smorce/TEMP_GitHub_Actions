@@ -76,8 +76,8 @@ steps:
     'beta',                  # なくても良さそう
     'run',
     'deploy',
-    'temp-github-actions',   # これで合ってるっぽい。多分、リソース名。
-    '--port=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？
+    'temp-github-actions',   # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
+    # '--port=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
     '--region=us-west1',     # europe-west1 から オレゴン us-west1 に変更。Cloud Build も us-west1 にした　→　この指定は外した方が良い？ あっても大丈夫そう。一旦このままで
     '--platform=managed']
