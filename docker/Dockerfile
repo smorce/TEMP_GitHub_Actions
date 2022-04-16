@@ -4,6 +4,11 @@ FROM python:3.9-buster
 FROM tiangolo/uvicorn-gunicorn-fastapi
 ENV PYTHONUNBUFFERED=1
 
+# 必須
+# ファイルは全部必要なので、マウント先に全部コピーする
+# これをやらないと /home/projects 下は空っぽだった。マウントするだけではなにもファイルが存在しない
+COPY . /home/projects
+
 # --mount オプション でバインドマウントする。-p のオプションは必要。 イメージ名は temp_github_actions(小文字じゃないといけない) と自分で決めた。latestというタグをつけた。
 # docker run -p 4200:4200 --rm --mount type=bind,src=/Users/tamurasho/Documents/mlops/Docker-test3,dst=/home/projects temp_github_actions:latest
 # 多分、上記は設定ファイルとは関係ない。本番環境でコンテナを展開するときに打つコマンド。
@@ -11,10 +16,6 @@ ENV PYTHONUNBUFFERED=1
 # WORKDIR・・・RUNコマンドを実行する際の作業ディレクトリを指定します。必須。
 WORKDIR /home/projects
 
-# 必須
-# ファイルは全部必要なので、マウント先に全部コピーする
-# これをやらないと /home/projects 下は空っぽだった。マウントするだけではなにもファイルが存在しない
-COPY . /home/projects
 
 # 修正したソースコードをGitリポジトリにアップするために
 # コンテナ上にGitをインストールします。
