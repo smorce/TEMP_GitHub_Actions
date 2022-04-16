@@ -78,7 +78,7 @@ steps:
     'run',
     'deploy',
     'temp-github-actions',   # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
-    '--port=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
+    # '--port=4200',           # 大文字ではエラーになる。 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
     '--region=asia-northeast1',     # この指定は外した方が良い？ あっても大丈夫そう。一旦このままで。本番環境を置く場所かもしれないので、asia-northeast1 にした
     '--platform=managed']
