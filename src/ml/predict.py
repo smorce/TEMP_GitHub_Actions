@@ -150,15 +150,10 @@ under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 mean_uper = uper.mean()
 mean_under = under.mean()
 
-print(mean_result, mean_uper)
-print()
-print(mean_result, mean_under)
-
-
 # mean_uper を超えるものが1つでもあるか？ もしくは mean_under を下回るものが1つでもあるか？
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
-    resp = requests.post(url, headers={'Authorization': f'token  {GITHUB_TOKEN}'}, data = json.dumps({'event_type': event_type}))
+    resp = requests.post(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, data = json.dumps({'event_type': event_type}))
     print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。予測は強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit(0)
