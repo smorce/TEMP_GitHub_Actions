@@ -31,7 +31,7 @@
   # App Engin
   # Firebase
 
-# Cloud Build は、特別なサービス アカウントを使用してユーザーの代わりにビルドを実行します。
+# Cloud Build は、特別なサービスアカウント を使用してユーザーの代わりにビルドを実行します。
 # Cloud Build サービス アカウントにタスクの実行に必要な権限が付与されていない場合は、次のエラーが表示されます。
 # Missing necessary permission iam.serviceAccounts.actAs for [USER] on the service account
 # [CLOUD_BUILD_SERVICE_ACCOUNT]@PROJECT.iam.gserviceaccount.com
@@ -39,7 +39,6 @@
 # Cloud Run とは？
 # 自分で作ったコンテナを、Googleが用意したサーバー環境上で動かすことができます。
 # http(s) の口を持ったWebサイト/Web APIサーバーを手軽に作れて、スケーリングも勝手に面倒見てくれます。
-
 
 # デフォルトは cloudbuild.yaml ですが、ビルドコマンド実行時にオプション -config で任意のファイル名を指定することも可能です。
 # cloudbuild.yaml は ソースの一番上の階層のディレクトリ直下に作成してください。
@@ -49,7 +48,7 @@
 # gcr.io/プロジェクトID/コンテナイメージの名前
 
 # ★「github.com/smorce/temp-github-actions」→他のブログでは「temp-github-actions」としている
-# ★「github.com/smorce/temp-github-actions」がイメージ名っぽい。自由に決められるからこれで問題なさそう
+# ★「github.com/smorce/temp-github-actions:$SHORT_SHA」がイメージ名。自由に決められるからこれで問題なさそう
 
 # Google Cloud Build
 steps:
@@ -77,9 +76,9 @@ steps:
     'run',
     'deploy',
     'temp-github-actions',   # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
-    # '--port=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？
+    '--PORT=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
-    '--region=us-west1',     # europe-west1 から オレゴン us-west1 に変更。Cloud Build も us-west1 にした　→　この指定は外した方が良い？ あっても大丈夫そう。一旦このままで
+    '--region=asia-northeast1',     # この指定は外した方が良い？ あっても大丈夫そう。一旦このままで。本番環境を置く場所かもしれないので、asia-northeast1 にした
     '--platform=managed']
 
 
