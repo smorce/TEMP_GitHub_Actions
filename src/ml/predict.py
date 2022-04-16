@@ -14,7 +14,7 @@ pd.set_option('display.max_columns', 500)
 
 # setting variables
 user = "smorce"
-repo = "temp_github_actions"
+repo = "temp-github-actions"
 event_type = "delivery-retrain-model"
 GITHUB_TOKEN = os.environ.get("TOKEN")
 
