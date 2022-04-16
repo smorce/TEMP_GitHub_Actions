@@ -18,6 +18,6 @@ steps:
   - '--image'
   - 'gcr.io/$PROJECT_ID/temp-github-actions:$COMMIT_SHA'
   - '--region'
-  - 'asia-northeast1'
+  - 'us-west1'
 images:
 - 'gcr.io/$PROJECT_ID/temp-github-actions:$COMMIT_SHA'
