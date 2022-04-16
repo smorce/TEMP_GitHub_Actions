@@ -141,20 +141,19 @@ std_result = predicted_y_test_std
 #    NO → 通常通りの処理を最後まで実行する
 # ------------------------------------------------------
 # 学習時の信頼区間を再現
+# uper, under <class 'numpy.ndarray'>
 uper = _dict['predicted_y_test'] + 3.00 * _dict['predicted_y_test_std']
 under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 # 比較するための代表値が必要なので平均値とする
 # mean_result が下記の値よりも上か下に飛び出していたら異常値と定義する
 
-print(type(uper))
-
 mean_uper = uper.mean()
 mean_under = under.mean()
 # mean_uper を超えるものが1つでもあるか？ もしくは mean_under を下回るものが1つでもあるか？
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
-    print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。予測は強制終了します")
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token  {GITHUB_TOKEN}'}, data = json.dumps({'event_type': event_type}))
+    print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。予測は強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit()
 
@@ -218,7 +217,5 @@ df['Outlier_Type'] = outlier_spec
 
 # if_exists="replace" : 同じものがあったら上書き保存する
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
-
-
 
 

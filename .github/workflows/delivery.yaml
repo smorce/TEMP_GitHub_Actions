@@ -1,4 +1,4 @@
-name: retrain_model
+name: Retrain Model
 
 # GitHub Actions では GitHub 上のいろんなイベントをフックして Action を実行できますが、
 # 外部からAPIリクエストによっても Action を起動することができます。それが repository_dispatch です。
