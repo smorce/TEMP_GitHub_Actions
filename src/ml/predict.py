@@ -145,8 +145,11 @@ uper = _dict['predicted_y_test'] + 3.00 * _dict['predicted_y_test_std']
 under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 # 比較するための代表値が必要なので平均値とする
 # mean_result が下記の値よりも上か下に飛び出していたら異常値と定義する
-mean_uper = mean(uper)
-mean_under = mean(under)
+
+print(type(uper))
+
+mean_uper = uper.mean()
+mean_under = under.mean()
 # mean_uper を超えるものが1つでもあるか？ もしくは mean_under を下回るものが1つでもあるか？
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
     print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。予測は強制終了します")

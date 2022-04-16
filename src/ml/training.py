@@ -30,6 +30,7 @@ bqclient = bigquery.Client()
 # トレーニングデータは noise = 10 のデータに絞る
 # ===================================================
 if ON_RETRAIN_MODE :
+    # 再学習フロー
     # 違い：こっちは最新のデータから1500件持ってくる
     query_string = """
     SELECT
