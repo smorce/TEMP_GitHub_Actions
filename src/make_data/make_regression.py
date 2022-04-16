@@ -26,6 +26,7 @@ warnings.filterwarnings('ignore')
 # noise : ばらつきを付与できる
 # ランダムな値を生成するため random_state は固定しない
 
+# 特徴量数
 n_features = 10
 # 通常のノイズ設定
 noise = 10
@@ -33,12 +34,14 @@ noise = 10
 if random.randint(1, 20) // 20 == 1:
     noise = 200
 X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
+# X の値が小さいので100倍する
 X_raw = X_raw * 100
 
 # pandas.DataFrame 形式に変換
 columns = [f'f{i+1}' for i in range(n_features)]
 df = pd.DataFrame(X_raw, columns=columns)
 df['y'] = y_raw
+df['noise'] = noise
 
 
 # **ランダムにデータを30%欠損させ保存する**
@@ -50,8 +53,9 @@ size = int(len(df) * 0.3)
 
 # ランダムに欠損させる
 for k in df.keys():
-    # 欠損させるのは特徴量**ランダムにデータを30%欠損させ、欠損ありのCSVを保存する**のみ
-    if k != 'y':
+    # 欠損させるのは特徴量
+    # ランダムにデータを30%欠損させ、欠損ありのCSVを保存するのみ
+    if k not in ['y', 'noise']:
         rand = np.random.randint(0, len(df) , size = size)
         df.loc[rand,k] = np.nan
 

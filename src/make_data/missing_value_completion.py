@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 
@@ -88,7 +82,4 @@ save_file_name = 'df_on_missing_value_completion.csv'
 uploaded_file_path = './data/df_on_missing_value_completion.csv'
 blob = bucket.blob(save_file_name)
 blob.upload_from_filename(filename=uploaded_file_path)
-
-
-# In[ ]:
 

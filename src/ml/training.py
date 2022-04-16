@@ -1,12 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[38]:
-
-
 import numpy as np
 import pandas as pd
 import pickle
+import os
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -14,6 +9,9 @@ pd.set_option('display.max_columns', 500)
 # 実行上問題ないwarningは非表示にする
 import warnings
 warnings.filterwarnings('ignore')
+
+
+ON_RETRAIN_MODE = os.environ.get('ON_RETRAIN_MODE')
 
 
 # **BigQueryからデータをロードする**
@@ -27,24 +25,50 @@ bqclient = bigquery.Client()
 
 # Download query results.
 # ===================================================
-# 全データをロードして df に保存する　→　超時間がかかるのでランダムサンプルしてLIMITをかける
+# 全データをロードして df に保存する
+# 超時間がかかるのでランダムサンプルしてLIMITをかける
+# トレーニングデータは noise = 10 のデータに絞る
 # ===================================================
-query_string = """
-SELECT
-    y
-    ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-    ,rand() AS random
-    # ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
-FROM
-    df_on_missing_value_completion.df_on_missing_value_completion
-ORDER BY
-    random
-LIMIT
-    1500    # 3000にすると20分以上かかる
-# GROUP BY
-#     y
-#     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-"""
+if ON_RETRAIN_MODE :
+    # 違い：こっちは最新のデータから1500件持ってくる
+    query_string = """
+    SELECT
+        y
+        ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+        ,_airbyte_emitted_at
+    FROM
+        df_on_missing_value_completion.df_on_missing_value_completion
+    WHERE
+        noise = 10
+    ORDER BY
+        _airbyte_emitted_at DESC
+    LIMIT
+        1500    # 3000にすると20分以上かかる
+    # GROUP BY
+    #     y
+    #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    """
+else :
+    # 通常のトレーニングフロー
+    # ランダムに1500件持ってきて学習させる
+    query_string = """
+    SELECT
+        y
+        ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+        ,rand() AS random
+        # ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
+    FROM
+        df_on_missing_value_completion.df_on_missing_value_completion
+    WHERE
+        noise = 10
+    ORDER BY
+        random
+    LIMIT
+        1500    # 3000にすると20分以上かかる
+    # GROUP BY
+    #     y
+    #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    """
 print("!----- データ集計中… -----!")
 df = (
     bqclient.query(query_string)
@@ -81,7 +105,10 @@ K_FOLD = 5
 
 # dataset(array型)
 y = df.y.values
-x = df.drop(columns=['y','random']).values
+if ON_RETRAIN_MODE :
+    x = df.drop(columns=['y','_airbyte_emitted_at']).values
+else:
+    x = df.drop(columns=['y','random']).values
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0)
 
@@ -137,12 +164,10 @@ pickle.dump(model, open(filename, 'wb'))
 df.to_csv("./data/training.csv", index=False)
 
 
-# # 予測するときに標準化したものを割り戻さないといけないので平均値と標準偏差も保存する
+# 予測するときに標準化したものを割り戻さないといけないので平均値と標準偏差も保存する
+# ドリフトチェックのために学習時の平均値と標準偏差も保存する
 
-# In[40]:
-
-
-_dict = {'y_mean' : y_train.mean(), 'y_std' : y_train.std(ddof=1)}
+_dict = {'y_mean' : y_train.mean(), 'y_std' : y_train.std(ddof=1), 'predicted_y_test' : predicted_y_test, 'predicted_y_test_std' : predicted_y_test_std}
 pickle.dump(_dict, open("./data/mean_and_std.txt", "wb") )
 
 

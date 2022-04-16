@@ -5,7 +5,7 @@ import schemas as schema
 # predict を読み込むために相対パスを追加
 sys.path.append('src/ml')
 # from src.ml.predict では読み込めなかった
-from predict import Model
+from predict_model import Model
 
 router = APIRouter()
 
