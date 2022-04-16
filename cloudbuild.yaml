@@ -17,7 +17,7 @@ steps:
   - 'temp-github-actions'   # 小文字の英数字とダッシュのみを使用
   - '--image'
   - 'gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$COMMIT_SHA'
-  - '--port=4200',           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？
+  - '--port=4200'           # 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？
   - '--region'
   - 'us-west1'
 # images:
