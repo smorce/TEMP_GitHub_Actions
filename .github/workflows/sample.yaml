@@ -38,17 +38,20 @@ jobs:
 
 
       # デバッグ中は消す ###################################################
-      - name: Run Python make_regression_data
-        run: |
-            echo $service_account_key | base64 --decode > ./credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
-            export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # デコードしたクレデンシャル情報をセットする
-            python src/make_data/make_regression.py                           # スクリプト実行
+      # - name: Run Python make_regression_data
+      #   run: |
+      #       echo $service_account_key | base64 --decode > ./credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
+      #       export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # デコードしたクレデンシャル情報をセットする
+      #       python src/make_data/make_regression.py                           # スクリプト実行
 
-      - name: Run Python complement_missing_value_data
-        run: |
-            sleep 5s                                                          # 5秒後に実行する
-            export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
-            python src/make_data/missing_value_completion.py                  # スクリプト実行
+      # - name: Run Python complement_missing_value_data
+      #   run: |
+      #       sleep 5s                                                          # 5秒後に実行する
+      #       export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
+      #       python src/make_data/missing_value_completion.py                  # スクリプト実行
+      # ####################################################################
+
+
 
       # 初回はこれを実行してモデルを保存する
       # 一回やったらコメントアウトする
