@@ -34,6 +34,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r etc/requirements.txt
 
+      # 作業前に最新の状態にする
+      - name: Run Update
+        run: |
+            git config --global user.email ${{secrets.EMAIL}}
+            git config --global user.name ${{secrets.NAME}}
+            git pull
+
       # モデルの再学習
       - name: Run Python GaussianProcessRegressor_re_training
         env:
@@ -48,7 +55,6 @@ jobs:
         run: |
             git config --global user.email ${{secrets.EMAIL}}
             git config --global user.name ${{secrets.NAME}}
-            git pull
             git add -A
             git commit -m "push retrain model"
             git push origin main

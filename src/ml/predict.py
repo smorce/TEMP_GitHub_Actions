@@ -150,6 +150,9 @@ under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 mean_uper = uper.mean()
 mean_under = under.mean()
 
+print(3.00 * _dict['predicted_y_test_std'])
+print(_dict['predicted_y_test'])
+
 # mean_uper を超えるものが1つでもあるか？ もしくは mean_under を下回るものが1つでもあるか？
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
