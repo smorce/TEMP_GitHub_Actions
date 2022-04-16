@@ -56,7 +56,7 @@ jobs:
         env:
           ON_RETRAIN_MODE: False
         run: |
-            sleep 5s                                                          # 5秒後→1日後に実行する
+            sleep 5s                                                          # 5秒後→Airbyteが動くまで待つ必要があるので1日後に実行する
             echo $service_account_key | base64 --decode > ./credential.json   # ここは後で消す
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
             python src/ml/training.py                                         # スクリプト実行

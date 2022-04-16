@@ -3,7 +3,7 @@ pandas
 pandas-gbq
 scikit-learn == 1.0.0
 # google-cloud-bigquery　いらない
-# google-cloud-storage　いらない
+google-cloud-storage
 google-cloud-bigquery-storage
 pyarrow
 matplotlib
