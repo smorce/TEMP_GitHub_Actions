@@ -50,13 +50,14 @@
 # gcr.io/プロジェクトID/コンテナイメージの名前
 
 # ★「github.com/smorce/temp-github-actions」→他のブログでは「temp-github-actions」としている
-# ★「github.com/smorce/temp-github-actions:$SHORT_SHA」がイメージ名。自由に決められるからこれで問題なさそう
+# ★「gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA」がイメージ名のフルパス。
+# ★「temp-github-actions:$SHORT_SHA」がイメージ名。自由に決められるからこれで問題なさそう
 
 # Google Cloud Build
 steps:
 # Dockerビルド(Dockerイメージの作成)
 - name: 'gcr.io/cloud-builders/docker'
-  # dir で指定したディレクトリにあるDockerfileを対象
+  # dir で指定したディレクトリにあるDockerfileを対象　←　多分、これだとカレントディレクトリが変わるっぽい。使ってはいけない!!  -f で指定する
   # dir: "docker"
   # gcr.io/$PROJECT_ID/{image名} というイメージを作成　 docker run から {image名}=temp-github-actions かも？
   # github.com/{github_user}/{repo}
@@ -76,11 +77,11 @@ steps:
 # beta と書いてあるので新しい機能っぽい
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
-    'beta',                  # なくても良さそう
+    'beta',                    # なくても良いかもしれない
     'run',
     'deploy',
-    'temp-github-actions',   # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
-    # '--port=4200',           # 大文字ではエラーになる。 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
+    'temp-github-actions',     # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
+    # '--port=4200',           # 大文字PORTではエラーになる。 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
     '--region=asia-northeast1',     # この指定は外した方が良い？ あっても大丈夫そう。一旦このままで。本番環境を置く場所かもしれないので、asia-northeast1 にした
     '--platform=managed']
