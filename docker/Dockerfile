@@ -44,4 +44,5 @@ EXPOSE 4200
 # CMDは原則は末尾に記載。コンテナ起動時に実行するコマンドとオプションを変更できます。
 # nohup & は無理だった
 # localhost じゃ起動できない。0.0.0.0 が正しい
+# 本番環境では "--reload" は外した方が良い
 CMD ["uvicorn", "src.api.api:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]

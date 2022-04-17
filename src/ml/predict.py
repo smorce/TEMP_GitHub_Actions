@@ -155,7 +155,7 @@ mean_under = under.mean()
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, data = json.dumps({'event_type': event_type}))
-    print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。予測は強制終了します")
+    print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQueryは更新せずに予測を強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit(0)
 

@@ -44,7 +44,7 @@ if ON_RETRAIN_MODE :
     ORDER BY
         _airbyte_emitted_at DESC
     LIMIT
-        100    # 3000にすると20分以上かかる。デバッグ中だけ100。あとで1500に戻す
+        1500    # 3000にすると20分以上かかる。デバッグ中だけ100にしてた
     # GROUP BY
     #     y
     #     ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10

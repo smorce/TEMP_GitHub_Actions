@@ -37,6 +37,7 @@
 # [CLOUD_BUILD_SERVICE_ACCOUNT]@PROJECT.iam.gserviceaccount.com
 
 # Cloud Run とは？
+# 正確には「どこかのKubernetes上で動いているKnative環境」。Cloud Runのサービスを作成するとhttpsのエンドポイントが生成されます。
 # 自分で作ったコンテナを、Googleが用意したサーバー環境上で動かすことができます。
 # http(s) の口を持ったWebサイト/Web APIサーバーを手軽に作れて、スケーリングも勝手に面倒見てくれます。
 # Cloud Runではdocker-composeに対応していないようです。私は、すっかり先入観でdocker-composeで始めて、
@@ -77,17 +78,11 @@ steps:
 # beta と書いてあるので新しい機能っぽい
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
-    'beta',                    # なくても良いかもしれない
+    'beta',                        # なくても良いかもしれないけどこのままで
     'run',
     'deploy',
-    'temp-github-actions',     # これで合ってるっぽい。多分、リソース名。名前は自由に決めて良いのかも。
-    # '--port=4200',           # 大文字PORTではエラーになる。 追加してみたけど、いらない？ Dockerファイルで書いてあるからいらないかな？ エラーが出ていたので外してみた
+    'temp-github-actions',         # これで合ってるっぽい。多分、リソース名(サービス名)。名前は自由に決めて良いのかも。
+    # '--port=4200',               # 大文字PORTではエラーになる。 追加してみたけど、多分いらないので、外してみた。Dockerファイルの方で記載すればOKな気がする
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
-    '--region=asia-northeast1',     # この指定は外した方が良い？ あっても大丈夫そう。一旦このままで。本番環境を置く場所かもしれないので、asia-northeast1 にした
+    '--region=asia-northeast1',    # 本番環境(Cloud RUN)を置く場所。asia-northeast1 にした
     '--platform=managed']
-
-
-# Container Registryにpush
-# 最後の images を書くことで Container Registryにpushできます。不要だったら記載する必要はありません。←★教科書には書いていない
-# images: ['gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA']
-

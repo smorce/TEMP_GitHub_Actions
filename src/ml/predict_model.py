@@ -32,6 +32,7 @@ class Model():
 
     def load_data(self):
         # **予測するためBigQueryからユーザのログデータをロードする**
+        # メタデータサーバーに問い合わせて得られた認証情報を使用する
         from google.cloud import bigquery
         bqclient = bigquery.Client()
         print("!----- BigQueryから予測用のデータを読み込みます -----!")
