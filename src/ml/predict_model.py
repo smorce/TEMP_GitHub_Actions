@@ -161,10 +161,6 @@ class Model():
 
         # model.predict() を読み込んだタイミングで、ADCライブラリを経由してサービスアカウントの認証情報を取得している
         # 認証情報を通せば to_gbq が動くことは確認済み
-        """
-        消してみる。認証情報を通しているので多分不要
-        project_id = os.environ.get('project_id')
-        """
 
         # 名前が分かりづらいので df に一旦格納する
         # df が更新されたら self.df も更新される
@@ -203,8 +199,4 @@ class Model():
         df['Outlier_Type'] = outlier_spec
 
         # if_exists="replace" : 同じものがあったら上書き保存する
-        """
-        project_id を消してみる。認証情報を通しているので多分不要。認証情報を通せば to_gbq が動くことは確認済み
-        df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
-        """
         df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", if_exists="replace")

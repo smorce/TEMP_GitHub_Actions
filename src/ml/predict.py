@@ -138,22 +138,29 @@ std_result = predicted_y_test_std
 # 予測した結果 mean_result と、学習時の3σの"平均値"を比較して異常値が出ていたら
 # データの分布が変わったとみなして再学習する
 # <分岐>ドリフトチェックに引っかかる
-#   YES → モデルを再学習して強制的にスクリプトを終了させる。予測する意味がないので、BigQueryの更新も行わない
+#   YES → モデルを再学習して強制的にスクリプトを終了させる。予測する意味がないので、BigQuery の更新も行わない
 #    NO → 通常通りの処理を最後まで実行する
 # ------------------------------------------------------
 # 学習時の信頼区間を再現
 # uper, under <class 'numpy.ndarray'>
 uper = _dict['predicted_y_test'] + 3.00 * _dict['predicted_y_test_std']
 under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
-# 比較するための代表値が必要なので平均値とする
-# mean_result が下記の値よりも上か下に飛び出していたら異常値と定義する
 
+# 比較するための代表値が必要なので平均値とする
+# mean_result が下記の値よりも上か下に N% 飛び出していたら異常値と定義する
 mean_uper = uper.mean()
 mean_under = under.mean()
 
-# mean_uper を超えるものが1つでもあるか？ もしくは mean_under を下回るものが1つでもあるか？
-# 「1つでも」の条件が厳しすぎる場合は、全体の N% で異常値が発生した場合とする
-if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
+# mean_uper を超えるもの もしくは mean_under を下回るものが全体の60%以上か？
+N = 0.6
+uper_count = np.count_nonzero(mean_result > mean_uper)  # mean_uper を超えた件数
+under_count = np.count_nonzero(mean_result < mean_under)  # mean_uper を下回った件数
+out_count = uper_count + under_count
+
+print('異常値の件数 =', out_count)
+print('異常値の件数割合 =', out_count / len(mean_result))
+
+if ( out_count / len(mean_result) ) >= N:
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token {Personal_Access_TOKEN}'}, data = json.dumps({'event_type': event_type}))
     print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQueryは更新せずに予測を強制終了します")
@@ -162,6 +169,7 @@ if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
 
 
 # 異常値が何もなければ下記の処理に続く
+print("異常を検知しなかったので通常の predict-flow を実行します")
 
 
 # **グラフ描画と保存**
@@ -183,11 +191,6 @@ plt.close('all')
 
 # **入力データと予測結果をBigQueryに書き込む**
 # pandas.to_gbq のやり方しか見つからなかった
-"""
-消してみる。認証情報を通しているので多分不要
-project_id = os.environ.get('project_id')
-"""
-
 
 # df に予測値を入れる
 df['GPR_Mean_Predicted'] = mean_result
@@ -222,10 +225,6 @@ for i in range(len(df)):
 df['Outlier_Type'] = outlier_spec
 
 # if_exists="replace" : 同じものがあったら上書き保存する
-"""
-project_id を消してみる。認証情報を通しているので多分不要。認証情報を通せば to_gbq が動くことは確認済み
-df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
-"""
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", if_exists="replace")
 
 
