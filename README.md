@@ -3,11 +3,11 @@ Name
 
 Overview
 よく使うコマンド
+git status
 git pull
 git add -A
 git commit -m"xxx追加"
 git push origin main
-git status
 # ----------------------------
 $ git branch #現在のローカルのブランチ確認
 * main
