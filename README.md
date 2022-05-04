@@ -31,11 +31,12 @@ $ git branch #新しくdevelopブランチが作成されたことを確認
 ## Description
 
 ## Demo
+・GCS のバケットは Airbyte がアクセスできるように一般公開しておく
 ・train.yamlを実行する
----- Airbyte側の設定 ------
 ・欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
+・BigQuery に df_on_missing_value_completion テーブルが作成されたら、権限から github-actions のサービスアカウントをプリンシパルとして追加
+　権限はBigQueryデータオーナー
 ・10分後に Airbyte で「24時間ごとに起動する設定」を Enable に設定する
---------------------------
 
 ## VS.
 
