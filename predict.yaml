@@ -20,7 +20,7 @@ env:
   service_account_key: ${{ secrets.GCP_SA_KEY }}    # GCPのサービスアカウント
 
 jobs:
-  python-Sample:
+  Model-Predict:
     runs-on: ubuntu-latest
     steps:
 

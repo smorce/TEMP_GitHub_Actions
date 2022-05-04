@@ -5,9 +5,8 @@ Overview
 よく使うコマンド
 git pull
 git add -A
-git pull
 git commit -m"xxx追加"
-git push
+git push origin main
 git status
 # ----------------------------
 $ git branch #現在のローカルのブランチ確認
