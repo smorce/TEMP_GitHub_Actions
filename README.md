@@ -33,7 +33,8 @@ $ git branch #新しくdevelopブランチが作成されたことを確認
 ## Demo
 ・GCS のバケットは Airbyte がアクセスできるように一般公開しておく
 ・github-actions-account のサービスアカウントを作っておく
-　┗BigQuery データオーナー
+　┗BigQuery データオーナー　←　必要
+　┗BigQuery ユーザー　←　必要
 　┗ストレージ管理者
 ・train.yamlを実行する
 ・欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
