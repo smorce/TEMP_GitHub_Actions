@@ -1,12 +1,15 @@
-name: Action Sample
+name: Model Predict
+
+# 運用について
+# Airbyte「24時間ごとに起動する設定」を Enable に設定した後、10分後にこのファイルをPUSHする
 
 on:
-  push:
-    branches:
-      - main
-  # schedule:
-  #   - cron: '*/5 * * * *' # ５分ごと
-  # Github Actionsワークフローをコードレベルで起動するには、workflow_dispatchトリガーを使用する必要があります。
+  # push:
+  #   branches:
+  #     - main
+  schedule:
+    - cron: '0 */23 * * *' # 1時間の待機時間があるので23時間ごと。実際には predict に時間がかかったりするのでちょっとずつズレていくかも。月1くらいでちゃんと確認するフローが良いかも。実務ではDAGで運用した方良い
+  # Github Actionsワークフローをコードレベルで起動するには、workflow_dispatchトリガーを使用する必要がある
   workflow_dispatch:
 
 # Settingsを扱えるのは、リポジトリのオーナーのみ
@@ -35,7 +38,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r etc/requirements.txt
 
-      # デバッグ中は消す ###################################################
+      # 作業前に最新の状態にする
+      - name: Run Update
+        run: |
+            git config --global user.email ${{secrets.EMAIL}}
+            git config --global user.name ${{secrets.NAME}}
+            git pull
+
       - name: Run Python make_regression_data
         run: |
             echo $service_account_key | base64 --decode > ./credential.json   # base64 のデータをデコードしてクレデンシャル情報を復元する(https://soypocket.com/it/github-actions-json-secrets/)
@@ -44,38 +53,25 @@ jobs:
 
       - name: Run Python complement_missing_value_data
         run: |
-            sleep 5s                                                          # 5秒後に実行する
+            sleep 5s                                                          # 5秒後に実行する(なんとなくバッファを入れた)
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
             python src/make_data/missing_value_completion.py                  # スクリプト実行
-      # ####################################################################
 
+      # このタイミングで Airbyte の変換(GCS → BigQuery)が入る
 
-
-      # 初回はこれを実行してモデルを保存する
-      # 一回やったらコメントアウトする
-      - name: Run Python GaussianProcessRegressor_first_training
+      - name: Run Python GaussianProcessRegressor_predict
         env:
-          ON_RETRAIN_MODE: False
+          TOKEN: ${{ secrets.TOKEN }}                                         # 登録した Personal Access Token
         run: |
-            sleep 5s                                                          # 5秒後→Airbyteが動くまで待つ必要があるので1日後に実行する
+            sleep 1h                                                          # Airbyte を起動させている間の待機時間を1hで設定する
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
-            python src/ml/training.py                                         # スクリプト実行
+            python src/ml/predict.py                                          # スクリプト実行
             rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
 
-      # 初回は予測なし
-      # - name: Run Python GaussianProcessRegressor_predict
-      #   env:
-      #     TOKEN: ${{ secrets.TOKEN }}
-      #   run: |
-      #       sleep 5s                                                          # 5秒後→1日後に実行する。ただし、初回だけはトレーニングの直後でOK
-      #       export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
-      #       python src/ml/predict.py                                          # スクリプト実行
-      #       rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する
-
-      - name: Files commit
+      - name: Predict commit
         run: |
             git config --global user.email ${{secrets.EMAIL}}
             git config --global user.name ${{secrets.NAME}}
             git add -A
-            git commit -m "add Files"
+            git commit -m "add Predict Files"
             git push origin main

@@ -2,9 +2,9 @@ import sys
 from fastapi import APIRouter, HTTPException
 
 import schemas as schema
-# predict を読み込むために相対パスを追加
+# predict_model を読み込むために相対パスを追加
 sys.path.append('src/ml')
-# from src.ml.predict では読み込めなかった
+# from src.ml.predict_model では読み込めなかった
 from predict_model import Model
 
 router = APIRouter()
@@ -28,6 +28,7 @@ class Task(BaseModel):　　←　下記の schema.Task がこれ
 async def list_tasks():
     return [schema.Task(id=1, title="1つ目のTODOタスク")]
 """
+# GET: データの取得
 @router.get("/")
 async def hello():
     return {"message": "hello world!"}
@@ -58,9 +59,9 @@ async def predict():
     print("!----- 予測を開始します -----!")
     model.predict()
     print("!----- 予測が完了しました -----!")
-    print("!----- グラフの描画と保存をします -----!")
-    model.make_save_figure()
-    print("!----- グラフの描画と保存が完了しました -----!")
+    # print("!----- グラフの描画と保存をします -----!")　←　やっぱり、いらないかも。どこに保存されるかも分からないし。
+    # model.make_save_figure()
+    # print("!----- グラフの描画と保存が完了しました -----!")
     print("!----- 予測結果をBigQueryにアップロードします -----!")
     model.insert()
     print("!----- アップロードが完了しました -----!")
@@ -70,7 +71,7 @@ async def predict():
         raise HTTPException(status_code=400, detail="Results not found.")
     else:
         result_dict = {
-        "result_message": 'Predicted data inserted',
+        "result_message": 'Predicted data inserted on BigQuery',
         "Predicted_data": model.df
         }
         # return result_dict　←　この書き方でも良いが分かりづらいのでやめた

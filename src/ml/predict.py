@@ -16,7 +16,7 @@ pd.set_option('display.max_columns', 500)
 user = "smorce"
 repo = "temp-github-actions"
 event_type = "delivery-retrain-model"
-GITHUB_TOKEN = os.environ.get("TOKEN")
+Personal_Access_TOKEN = os.environ.get("TOKEN")
 
 
 def load_model():
@@ -31,7 +31,7 @@ def load_data():
     print("!----- BigQueryから予測用のデータを読み込みます -----!")
     # Download query results.
     # ===================================================
-    # 最新のデータをロードして df に保存する
+    # 最新のデータをロードして df に保存する(一応、1,000件に絞る)
     # ===================================================
     query_string = """
     SELECT
@@ -102,7 +102,7 @@ _dict = pickle.load(open(filename, 'rb'))
 
 
 # 学習で使ったデータを読み込む(使わない。ドリフトチェックで使うかも)
-# filename = "../data/training.csv"
+# filename = "./data/training.csv"
 # training = pd.read_csv(filename)
 # 学習時の最新の日付
 # last_training_date = training._airbyte_emitted_at.max()
@@ -133,8 +133,9 @@ mean_result = predicted_y_test
 std_result = predicted_y_test_std
 
 # ------------------------------------------------------
-## ドリフトチェック ##
-# 予測した結果 mean_result と、学習時の3σの"平均値"を比較して異常値が1つでも出ていたら
+### ドリフトチェック ###
+# ------------------------------------------------------
+# 予測した結果 mean_result と、学習時の3σの"平均値"を比較して異常値が出ていたら
 # データの分布が変わったとみなして再学習する
 # <分岐>ドリフトチェックに引っかかる
 #   YES → モデルを再学習して強制的にスクリプトを終了させる。予測する意味がないので、BigQueryの更新も行わない
@@ -154,7 +155,7 @@ mean_under = under.mean()
 # 「1つでも」の条件が厳しすぎる場合は、全体の N% で異常値が発生した場合とする
 if np.any(mean_result > mean_uper) or np.any(mean_result < mean_under):
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
-    resp = requests.post(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, data = json.dumps({'event_type': event_type}))
+    resp = requests.post(url, headers={'Authorization': f'token {Personal_Access_TOKEN}'}, data = json.dumps({'event_type': event_type}))
     print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQueryは更新せずに予測を強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit(0)
@@ -182,7 +183,10 @@ plt.close('all')
 
 # **入力データと予測結果をBigQueryに書き込む**
 # pandas.to_gbq のやり方しか見つからなかった
+"""
+消してみる。認証情報を通しているので多分不要
 project_id = os.environ.get('project_id')
+"""
 
 
 # df に予測値を入れる
@@ -218,6 +222,10 @@ for i in range(len(df)):
 df['Outlier_Type'] = outlier_spec
 
 # if_exists="replace" : 同じものがあったら上書き保存する
+"""
+project_id を消してみる。認証情報を通しているので多分不要。認証情報を通せば to_gbq が動くことは確認済み
 df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", project_id=project_id, if_exists="replace")
+"""
+df.to_gbq("df_on_missing_value_completion.predicted_df_on_missing_value_completion", if_exists="replace")
 
 

@@ -21,8 +21,9 @@ COPY . /home/projects
 # Visual Studio CodeのRemote Development 拡張機能を利用すると、
 # Visual Studio CodeのGitの機能はコンテナ側で動作します。
 # そのため、コンテナ側にもGitのインストールが必要になります。
+# --no-cache-dir をつけてキャッシュを消すことでイメージの容量を軽くする
 RUN python -m pip install --upgrade pip && \
-    pip install -r etc/requirements.txt && \
+    pip install --no-cache-dir -r etc/requirements.txt && \
     apt-get update && apt-get -y install git && apt-get -y install zsh && \
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true && \
     chsh -s /usr/bin/zsh && \

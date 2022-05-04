@@ -32,7 +32,7 @@
   # Firebase
 
 # Cloud Build は、特別なサービスアカウント を使用してユーザーの代わりにビルドを実行します。
-# Cloud Build サービス アカウントにタスクの実行に必要な権限が付与されていない場合は、次のエラーが表示されます。
+# Cloud Build サービスアカウントにタスクの実行に必要な権限が付与されていない場合は、次のエラーが表示されます。
 # Missing necessary permission iam.serviceAccounts.actAs for [USER] on the service account
 # [CLOUD_BUILD_SERVICE_ACCOUNT]@PROJECT.iam.gserviceaccount.com
 
@@ -50,15 +50,11 @@
 # Container Registry のタグは以下の構成となっています。コンテナイメージの名前は自分で決める
 # gcr.io/プロジェクトID/コンテナイメージの名前
 
-# ★「github.com/smorce/temp-github-actions」→他のブログでは「temp-github-actions」としている
-# ★「gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA」がイメージ名のフルパス。
-# ★「temp-github-actions:$SHORT_SHA」がイメージ名。自由に決められるからこれで問題なさそう
-
 # Google Cloud Build
 steps:
 # Dockerビルド(Dockerイメージの作成)
 - name: 'gcr.io/cloud-builders/docker'
-  # dir で指定したディレクトリにあるDockerfileを対象　←　多分、これだとカレントディレクトリが変わるっぽい。使ってはいけない!!  -f で指定する
+  # dir で指定したディレクトリにあるDockerfileを対象　←　多分、これだとカレントディレクトリが変わるっぽい。使ってはいけない!!  args の -f で指定する
   # dir: "docker"
   # 必須ではありませんが、自動ビルドの場合はどのコミットに対して作成されたイメージなのかを判別するために、コミットハッシュをタグ名(:$SHORT_SHA)にするとわかりやすくなります。
   # -t コマンドでタグの設定をします。
@@ -67,7 +63,7 @@ steps:
   args: [
     'build',
     '-t', 'gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
-    '-f', 'docker/Dockerfile',
+    '-f', 'docker/Dockerfile',     # Dockerfile が置いているあるディレクトリの指定
     '.']
 # Dockerイメージを Container Registry へ Push
 - name: 'gcr.io/cloud-builders/docker'
@@ -82,8 +78,8 @@ steps:
     'run',
     'deploy',
     'temp-github-actions',         # これで合ってるっぽい。多分、リソース名(サービス名)。名前は自由に決めて良いのかも。
-    '--port=4200',                 # 大文字PORTではエラーになる。これがないとエラーになる
-    '--timeout=20',                # エンドポイントを Call してレスポンスが返ってくるまでの timeout の設定を20秒に
+    '--port=4200',                 # 大文字PORTではエラーになる。これがないとエラーになるし、コンテナポートも8080になる
+    '--timeout=20',                # エンドポイントにリクエストを投げてレスポンスが返ってくるまでの timeout の設定を20秒に
     '--image=gcr.io/$PROJECT_ID/github.com/smorce/temp-github-actions:$SHORT_SHA',
     '--region=asia-northeast1',    # 本番環境(Cloud RUN)を置く場所。asia-northeast1 にした
     '--platform=managed']
