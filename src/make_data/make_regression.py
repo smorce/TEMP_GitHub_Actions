@@ -34,7 +34,8 @@ noise = 10
 if random.randint(1, 20) // 20 == 1:
     noise = 200
 
-noise = 200
+noise = 20000
+
 
 print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)

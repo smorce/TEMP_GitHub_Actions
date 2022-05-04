@@ -37,12 +37,14 @@ def load_data():
     SELECT
         y
         ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+        ,noise
         ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
     FROM
         df_on_missing_value_completion.df_on_missing_value_completion
     GROUP BY
         y
         ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+        ,noise
     LIMIT
         1000
     """
@@ -92,6 +94,11 @@ model = load_model()
 
 # 予測に必要なデータをBigQueryから読み込む
 df = load_data()
+
+
+print(df.noise.max())
+del df['noise']
+
 
 
 # **推論する**
