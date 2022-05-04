@@ -60,7 +60,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}                                         # 登録した Personal Access Token
         run: |
-            sleep 1h                                                          # Airbyte を起動させている間の待機時間を1hで設定する
+            sleep 1m                                                          # Airbyte を起動させている間の待機時間を1hで設定する→デバッグ中は1分
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
             python src/ml/predict.py                                          # スクリプト実行
             rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する

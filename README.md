@@ -38,9 +38,6 @@ $ git branch #新しくdevelopブランチが作成されたことを確認
 　┗ストレージ管理者
 ・train.yamlを実行する
 ・欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
-・これはなし
-　BigQuery に df_on_missing_value_completion テーブルが作成されたら、権限から github-actions-account のサービスアカウントをプリンシパルとして追加
-　権限はBigQueryデータオーナー
 ・10分後に Airbyte で「24時間ごとに起動する設定」を Enable に設定する
 
 ## VS.
