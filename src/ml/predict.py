@@ -167,7 +167,7 @@ print('異常値の件数 =', out_count)
 if out_count >= N:
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token {Personal_Access_TOKEN}'}, data = json.dumps({'event_type': event_type}))
-    print("5つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQueryは更新せずに予測を強制終了します")
+    print("5つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQuery は更新せずに予測を強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit(0)
 
