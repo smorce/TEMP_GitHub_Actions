@@ -42,7 +42,7 @@ X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informat
 # X の値が小さいので100倍する
 X_raw = X_raw * 100
 
-X_raw = X_raw * 10
+X_raw = X_raw * 1000
 
 
 # pandas.DataFrame 形式に変換
