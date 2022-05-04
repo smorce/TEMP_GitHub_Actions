@@ -36,7 +36,7 @@ if random.randint(1, 20) // 20 == 1:
 
 
 # ここを消す
-noise = 100
+noise = 200
 
 
 print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
