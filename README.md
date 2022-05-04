@@ -32,9 +32,10 @@ $ git branch #新しくdevelopブランチが作成されたことを確認
 
 ## Demo
 ・train.yamlを実行する
+---- Airbyte側の設定 ------
 ・欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
-・直後に Airbyte「24時間ごとに起動する設定」を Enable に設定する
-・その後10分後に predict.yaml を .github/workflows 下に配置してPUSHする
+・10分後に Airbyte で「24時間ごとに起動する設定」を Enable に設定する
+--------------------------
 
 ## VS.
 

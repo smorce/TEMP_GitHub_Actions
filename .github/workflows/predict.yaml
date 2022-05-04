@@ -1,8 +1,5 @@
 name: Model Predict
 
-# 運用について
-# Airbyte「24時間ごとに起動する設定」を Enable に設定した後、10分後にこのファイルをPUSHする
-
 on:
   # push:
   #   branches:
