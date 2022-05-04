@@ -42,8 +42,8 @@ X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informat
 # X の値が小さいので100倍する
 X_raw = X_raw * 100
 
-# カイ二乗分布に置き換え(自由度 5)
-X_raw = np.random.chisquare(5, (1000, n_features)) * 100
+# カイ二乗分布に置き換え(自由度 100)
+X_raw = np.random.chisquare(100, (1000, n_features)) * 100
 
 
 # pandas.DataFrame 形式に変換
