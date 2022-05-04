@@ -30,20 +30,20 @@ warnings.filterwarnings('ignore')
 n_features = 10
 # 通常のノイズ設定
 noise = 10
-bias = 0
 # 20回に1回の割合で200のノイズ設定になる
 if random.randint(1, 20) // 20 == 1:
     noise = 200
-    bias = 300
 
 # ここを消す
 noise = 57814
-bias = 1000
 
 print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
-X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise, bias=bias)
+X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
 # X の値が小さいので100倍する
 X_raw = X_raw * 100
+
+X_raw = X_raw * 10
+
 
 # pandas.DataFrame 形式に変換
 columns = [f'f{i+1}' for i in range(n_features)]
