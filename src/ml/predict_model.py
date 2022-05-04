@@ -46,12 +46,13 @@ class Model():
         SELECT
             y
             ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-            ,MAX(_airbyte_emitted_at) AS _airbyte_emitted_at
+            ,t1._airbyte_emitted_at
         FROM
-            df_on_missing_value_completion.df_on_missing_value_completion
-        GROUP BY
-            y
-            ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+            df_on_missing_value_completion.df_on_missing_value_completion AS t1
+        INNER JOIN
+            (SELECT MAX(_airbyte_emitted_at) AS maxDate FROM df_on_missing_value_completion.df_on_missing_value_completion) AS t2
+        ON
+            t1._airbyte_emitted_at = t2.maxDate
         LIMIT
             1000
         """
