@@ -37,8 +37,8 @@ def load_data():
     SELECT
         y
         ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-        ,noise
         ,t1._airbyte_emitted_at
+        ,noise
     FROM
         df_on_missing_value_completion.df_on_missing_value_completion AS t1
     INNER JOIN
@@ -95,10 +95,9 @@ model = load_model()
 # 予測に必要なデータをBigQueryから読み込む
 df = load_data()
 
-# あとで消す
-print(df.noise.max())
+print()
+print('今回の noise =', df.noise.max())
 del df['noise']
-
 
 
 # **推論する**
@@ -154,20 +153,18 @@ uper = _dict['predicted_y_test'] + 3.00 * _dict['predicted_y_test_std']
 under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 
 # 比較するための代表値が必要なので平均値とする
-# mean_result が下記の値よりも上か下に N% 飛び出していたら異常値と定義する
 mean_uper = uper.mean()
 mean_under = under.mean()
 
-# mean_uper を超えるもの もしくは mean_under を下回るものが全体の60%以上か？
-N = 0.6
+# mean_uper を超えるもの もしくは mean_under を下回るものが全部で 5 個以上か？
+N = 5
 uper_count = np.count_nonzero(mean_result > mean_uper)  # mean_uper を超えた件数
 under_count = np.count_nonzero(mean_result < mean_under)  # mean_uper を下回った件数
 out_count = uper_count + under_count
 
 print('異常値の件数 =', out_count)
-print('異常値の件数割合 =', out_count / len(mean_result))
 
-if ( out_count / len(mean_result) ) >= N:
+if out_count >= N:
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token {Personal_Access_TOKEN}'}, data = json.dumps({'event_type': event_type}))
     print("1つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQueryは更新せずに予測を強制終了します")

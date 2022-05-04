@@ -31,30 +31,19 @@ n_features = 10
 # 通常のノイズ設定
 noise = 10
 
-
-# if random.randint(1, 20) // 20 != 1:
-#     # 通常のフロー
-#     print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
-#     X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-#     # X の値が小さいので100倍する
-#     X_raw = X_raw * 100
-# else:
-#     # 20回に1回の割合で200のノイズ設定になる
-#     noise = 200
-#     print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
-#     X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-#     # カイ二乗分布に置き換え(自由度 100)
-#     X_raw = np.random.chisquare(100, (1000, n_features)) * 100
-
-
-# 20回に1回の割合で200のノイズ設定になる
-noise = 200
-print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
-X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-# カイ二乗分布に置き換え(自由度 100)
-X_raw = np.random.chisquare(100, (1000, n_features)) * 100
-
-
+if random.randint(1, 20) // 20 != 1:
+    # 通常のフロー
+    print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
+    X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
+    # X の値が小さいので100倍する
+    X_raw = X_raw * 100
+else:
+    # 20回に1回の割合で200のノイズ設定になる
+    noise = 200
+    print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
+    X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
+    # カイ二乗分布に置き換え(自由度 100)
+    X_raw = np.random.chisquare(100, (1000, n_features)) * 100
 
 # pandas.DataFrame 形式に変換
 columns = [f'f{i+1}' for i in range(n_features)]
