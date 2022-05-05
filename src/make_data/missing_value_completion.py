@@ -12,8 +12,8 @@ df = pd.read_csv('./data/df.csv')
 
 
 # **欠損値補完（MICE）**
-
-# In[2]:
+# time は文字列なのでMICEの特徴量には使わない。一旦、退避させる
+time = df.pop('time')
 
 
 from statsmodels.imputation import mice
@@ -50,8 +50,8 @@ for col, i in dict_mice_sorted:
         pass
 
 
-# In[10]:
-
+# 欠損値の補完ができたら、退避させた time を結合
+df['time'] = time
 
 df.to_csv('./data/df_on_missing_value_completion.csv', index=False)
 
