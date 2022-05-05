@@ -43,14 +43,14 @@ noise = 10
 #     noise = 200
 #     print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 #     X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-#     # 異常値を検出させやすくするため、カイ二乗分布に置き換え(自由度 100)
-#     X_raw = np.random.chisquare(100, (1000, n_features)) * 100
+#     # 異常値を検出させやすくするため、カイ二乗分布に置き換え(自由度 1000)
+#     X_raw = np.random.chisquare(1000, (1000, n_features)) * 10
 
 
-noise = 202
+noise = 5
 print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-X_raw = np.random.chisquare(1000, (1000, n_features)) * 10
+X_raw = np.random.chisquare(5, (1000, n_features)) * 100
 
 
 
