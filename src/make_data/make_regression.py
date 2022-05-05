@@ -45,17 +45,6 @@ X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informat
 X_raw = X_raw * 100
 
 
-
-# 分かりづらいのでカイ二乗分布は止めた
-noise = 200
-print("デバッグ中　今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
-X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-# X の値が小さいので100倍する
-X_raw = X_raw * 100
-
-
-
-
 # pandas.DataFrame 形式に変換
 columns = [f'f{i+1}' for i in range(n_features)]
 df = pd.DataFrame(X_raw, columns=columns)
