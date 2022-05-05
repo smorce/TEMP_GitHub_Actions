@@ -31,12 +31,13 @@ warnings.filterwarnings('ignore')
 n_features = 10
 # 通常のノイズ設定
 noise = 10
-
-if random.randint(1, 20) // 20 != 1:
+# N 回ごとに大きい noise を発生させる
+N = 3
+if random.randint(1, N) // N != 1:
     # 通常のフロー
     print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 else:
-    # 20回に1回の割合で200のノイズ設定になる
+    # N 回に 1 回の割合で 200 のノイズ設定になる
     noise = 200
     print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 

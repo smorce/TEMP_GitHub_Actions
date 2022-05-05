@@ -184,7 +184,7 @@ if ( out_count / len(mean_result) ) >= N:
 
 
 # 異常値が何もなければ下記の処理に続く
-print("異常を検知しなかったので通常の predict-flow を実行します")
+print("10% 以上の異常を検知しなかったので通常の predict-flow を実行します")
 
 
 # **グラフ描画と保存**
