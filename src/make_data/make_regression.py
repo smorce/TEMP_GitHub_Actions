@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import make_regression
 import random
+import datetime
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -50,8 +51,10 @@ columns = [f'f{i+1}' for i in range(n_features)]
 df = pd.DataFrame(X_raw, columns=columns)
 df['y'] = y_raw
 df['noise'] = noise
-
-
+# str 型で時間を記録(例：'_2022_0505_0324_46')
+now = datetime.datetime.now()
+time = now.strftime("_%Y_%m%d_%H%M_%S")
+df['time'] = time
 
 
 print('デバッグ中')
@@ -69,7 +72,7 @@ size = int(len(df) * 0.3)
 for k in df.keys():
     # 欠損させるのは特徴量
     # ランダムにデータを30%欠損させ、欠損ありのCSVを保存するのみ
-    if k not in ['y', 'noise']:
+    if k not in ['y', 'noise', 'time']:
         rand = np.random.randint(0, len(df) , size = size)
         df.loc[rand,k] = np.nan
 

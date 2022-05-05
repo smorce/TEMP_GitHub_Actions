@@ -37,14 +37,14 @@ def load_data():
     SELECT
         y
         ,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-        ,t1._airbyte_emitted_at
+        ,t1.time
         ,noise
     FROM
         df_on_missing_value_completion.df_on_missing_value_completion AS t1
     INNER JOIN
-        (SELECT MAX(_airbyte_emitted_at) AS maxDate FROM df_on_missing_value_completion.df_on_missing_value_completion) AS t2
+        (SELECT MAX(time) AS maxDate FROM df_on_missing_value_completion.df_on_missing_value_completion) AS t2
     ON
-        t1._airbyte_emitted_at = t2.maxDate
+        t1.time = t2.maxDate
     LIMIT
         1000
     """
@@ -61,13 +61,13 @@ def load_data():
         )
     )
     # 予測時の日付データは消さない。どのタイミングのデータを使って予測したのかを記録する
-    # del df['_airbyte_emitted_at']
+    # del df['time']
 
     # **予測したデータもロードする**
     # 欲しいのは最新の日付だけ(last_prediction)
     # query_string = """
     # SELECT
-    #     MAX(_airbyte_emitted_at) AS last_prediction
+    #     MAX(time) AS last_prediction
     # FROM
     #     df_on_missing_value_completion.predicted_df_on_missing_value_completion
     # """
@@ -116,7 +116,7 @@ _dict = pickle.load(open(filename, 'rb'))
 # filename = "./data/training.csv"
 # training = pd.read_csv(filename)
 # 学習時の最新の日付
-# last_training_date = training._airbyte_emitted_at.max()
+# last_training_date = training.time.max()
 
 
 # -----------------------------------
@@ -128,7 +128,7 @@ from sklearn.gaussian_process.kernels import WhiteKernel, RBF, ConstantKernel, M
 
 # dataset(array型)
 # y = df.y.values
-x = df.drop(columns=['y','_airbyte_emitted_at']).values
+x = df.drop(columns=['y','time']).values
 
 # autoscaling(標準化)
 autoscaled_x = (x - x.mean(axis=0)) / x.std(axis=0, ddof=1)
