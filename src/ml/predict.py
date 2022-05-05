@@ -95,14 +95,10 @@ model = load_model()
 # 予測に必要なデータをBigQueryから読み込む
 df = load_data()
 
+noise = df.noise.max()
 print()
-print('今回の noise =', df.noise.max())
+print('今回の noise =', noise)
 del df['noise']
-
-
-
-print('デバッグ中')
-print('yの合計値 =', df.y.values.sum())
 
 
 # **推論する**
@@ -151,6 +147,10 @@ std_result = predicted_y_test_std
 # <分岐>ドリフトチェックに引っかかる
 #   YES → モデルを再学習して強制的にスクリプトを終了させる。予測する意味がないので、BigQuery の更新も行わない
 #    NO → 通常通りの処理を最後まで実行する
+
+# 注意点
+# どうやっても多くの異常値を発生させることができなかったので、代表値をイジって無理やり異常値を大量発生させる
+#   noise = 200 なら → mean_uper * 0.9, mean_under * 0.9
 # ------------------------------------------------------
 # 学習時の信頼区間を再現
 # uper, under <class 'numpy.ndarray'>
@@ -161,18 +161,24 @@ under = _dict['predicted_y_test'] - 3.00 * _dict['predicted_y_test_std']
 mean_uper = uper.mean()
 mean_under = under.mean()
 
-# mean_uper を超えるもの もしくは mean_under を下回るものが全部で 5 個以上か？
-N = 5
+# noise = 200 なら
+if noise == 200:
+    mean_uper *= 0.9
+    mean_under *= 0.9
+
+# mean_uper を超えるもの もしくは mean_under を下回るものが全部で 10% 以上か？
+N = 0.1
 uper_count = np.count_nonzero(mean_result > mean_uper)  # mean_uper を超えた件数
 under_count = np.count_nonzero(mean_result < mean_under)  # mean_uper を下回った件数
 out_count = uper_count + under_count
 
 print('異常値の件数 =', out_count)
+print('異常値の割合 =', out_count / len(mean_result))
 
-if out_count >= N:
+if ( out_count / len(mean_result) ) >= N:
     url = f'https://api.github.com/repos/{user}/{repo}/dispatches'
     resp = requests.post(url, headers={'Authorization': f'token {Personal_Access_TOKEN}'}, data = json.dumps({'event_type': event_type}))
-    print("5つ以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQuery は更新せずに予測を強制終了します")
+    print("10% 以上の異常を検知したので、モデルの再学習用ワークフローを GitHub Actions で実行します。BigQuery は更新せずに予測を強制終了します")
     # モデルの再学習用ワークフローを発火させたら predict スクリプトは強制終了
     sys.exit(0)
 
