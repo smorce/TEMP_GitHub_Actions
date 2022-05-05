@@ -100,6 +100,11 @@ print('今回の noise =', df.noise.max())
 del df['noise']
 
 
+
+print('デバッグ中')
+print('yの合計値 =', df.y.values.sum())
+
+
 # **推論する**
 
 # 予測に必要な平均値と標準偏差を読み込む

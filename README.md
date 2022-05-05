@@ -37,7 +37,7 @@ $ git branch #新しくdevelopブランチが作成されたことを確認
 　┗BigQuery ユーザー　←　必要
 　┗ストレージ管理者
 ・train.yamlを実行する
-・欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
+・train.yaml の実行中に欠損値の補完ができたら Airbyte を手動で1回だけ実行させる → BigQuery にデータがインサートされる
 ・10分後に Airbyte で「24時間ごとに起動する設定」を Enable に設定する
 
 ## VS.

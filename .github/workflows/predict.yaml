@@ -1,11 +1,9 @@
 name: Model Predict
 
 on:
-  # push:
-  #   branches:
-  #     - main
   schedule:
-    - cron: '0 */23 * * *' # 1時間の待機時間があるので23時間ごと。実際には predict に時間がかかったりするのでちょっとずつズレていくかも。月1くらいでちゃんと確認するフローが良いかも。実務ではDAGで運用した方良い
+    - cron: '0,10,20,30,40,50 * * * *' # デバッグ中。10分おきに実行
+    # - cron: '0 */22 * * *' # 毎時 0分に 22時間おきに実行。2時間の待機時間があるので22時間ごと。実際には predict に時間がかかったりするのでちょっとずつズレていくかも。月1くらいでちゃんと確認するフローが良いかも。実務ではDAGで運用した方良い
   # Github Actionsワークフローをコードレベルで起動するには、workflow_dispatchトリガーを使用する必要がある
   workflow_dispatch:
 
@@ -60,7 +58,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}                                         # 登録した Personal Access Token
         run: |
-            sleep 1m                                                          # Airbyte を起動させている間の待機時間を1hで設定する→デバッグ中は1分
+            sleep 1m                                                          # Airbyte を起動させている間の待機時間を2hで設定する→デバッグ中は1分
             export GOOGLE_APPLICATION_CREDENTIALS="./credential.json"         # 同じ処理をしないといけない。もっと良いやり方はありそう
             python src/ml/predict.py                                          # スクリプト実行
             rm credential.json                                                # 間違ってPUSHしないようにクレデンシャルファイルは削除する

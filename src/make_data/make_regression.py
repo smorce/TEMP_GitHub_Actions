@@ -52,6 +52,12 @@ df['y'] = y_raw
 df['noise'] = noise
 
 
+
+
+print('デバッグ中')
+print('yの合計値 =', y_raw.sum())
+
+
 # **ランダムにデータを30%欠損させ保存する**
 
 # In[2]:
