@@ -108,10 +108,6 @@ K_FOLD = 5
 y = df.y.values
 
 
-print('デバッグ中')
-print('yの合計値 =', y.sum())
-
-
 if ON_RETRAIN_MODE :
     x = df.drop(columns=['y','_airbyte_emitted_at']).values
 else:
