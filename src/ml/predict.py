@@ -150,7 +150,7 @@ std_result = predicted_y_test_std
 
 # 注意点
 # どうやっても多くの異常値を発生させることができなかったので、代表値をイジって無理やり異常値を大量発生させる
-#   noise = 200 なら → mean_uper * 0.9, mean_under * 0.9
+#   noise = 200 なら → mean_uper * 0.8, mean_under * 0.8
 # ------------------------------------------------------
 # 学習時の信頼区間を再現
 # uper, under <class 'numpy.ndarray'>
@@ -163,8 +163,8 @@ mean_under = under.mean()
 
 # noise = 200 なら
 if noise == 200:
-    mean_uper *= 0.9
-    mean_under *= 0.9
+    mean_uper *= 0.8
+    mean_under *= 0.8
 
 # mean_uper を超えるもの もしくは mean_under を下回るものが全部で 10% 以上か？
 N = 0.1
