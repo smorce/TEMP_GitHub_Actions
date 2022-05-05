@@ -47,10 +47,11 @@ noise = 10
 #     X_raw = np.random.chisquare(100, (1000, n_features)) * 100
 
 
-noise = 200
+noise = 201
 print("今回の設定ノイズを表示します(設定値 10 or 200) :", noise)
 X_raw, y_raw = make_regression(n_samples=1000, n_features=n_features, n_informative=int(n_features/2), n_targets=1, noise=noise)
-X_raw = X_raw * 100
+X_raw = np.random.chisquare(100, (1000, n_features)) * 100
+
 
 
 # pandas.DataFrame 形式に変換
